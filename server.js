@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || true,
+    origin: [process.env.CLIENT_URL ,'https://petrajuniors.org/'],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
