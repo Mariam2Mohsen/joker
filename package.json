@@ -1,5 +1,6 @@
 {
   "name": "admin-website",
+  "homepage": "https://petrajuniors.org/joker_Admin_dashboard/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

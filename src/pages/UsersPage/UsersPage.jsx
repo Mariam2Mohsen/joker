@@ -21,7 +21,7 @@ const UsersPage = () => {
   const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/users/get_users');
+      const response = await axios.get('https://joker-hm0k.onrender.com/api/users/get_users');
       setUsers(response.data.data || []);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -43,7 +43,7 @@ const UsersPage = () => {
     
       const nextStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
       
-      await axios.put(`http://localhost:5000/api/users/user_update/${id}`, {
+      await axios.put(`https://joker-hm0k.onrender.com/api/users/user_update/${id}`, {
         account_status: nextStatus
       });
       
@@ -59,7 +59,7 @@ const UsersPage = () => {
  
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/user_delete/${deleteModal.userId}`);
+      await axios.delete(`https://joker-hm0k.onrender.com/api/users/user_delete/${deleteModal.userId}`);
       setUsers(users.filter(user => user.Users_id !== deleteModal.userId));
       setDeleteModal({ show: false, userId: null });
     } catch (error) {

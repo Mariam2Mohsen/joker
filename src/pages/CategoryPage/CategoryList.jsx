@@ -18,7 +18,7 @@ const CategoryList = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/categories');
+      const response = await axios.get('https://joker-hm0k.onrender.com/api/categories');
       if (response.data.success) {
         setCategories(response.data.data);
       }
@@ -41,7 +41,7 @@ const CategoryList = () => {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
       const token = localStorage.getItem('token');
       
-      const response = await axios.patch(`http://localhost:5000/api/categories/${id}/status`, 
+      const response = await axios.patch(`https://joker-hm0k.onrender.com/api/categories/${id}/status`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -59,7 +59,7 @@ const CategoryList = () => {
   const confirmDelete = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`http://localhost:5000/api/categories/${deleteModal.categoryId}`, {
+      const response = await axios.delete(`https://joker-hm0k.onrender.com/api/categories/${deleteModal.categoryId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

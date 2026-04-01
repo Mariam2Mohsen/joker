@@ -25,7 +25,7 @@ const SubCategoryList = () => {
   const fetchSubCategories = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/subcategories', getAuthHeaders());
+      const res = await axios.get('https://joker-hm0k.onrender.com/api/subcategories', getAuthHeaders());
       if (res.data.success) {
         setSubCategories(res.data.data);
       }
@@ -50,7 +50,7 @@ const SubCategoryList = () => {
   const toggleStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-      const res = await axios.patch(`http://localhost:5000/api/subcategories/${id}/status`, 
+      const res = await axios.patch(`https://joker-hm0k.onrender.com/api/subcategories/${id}/status`, 
         { status: newStatus }, 
         getAuthHeaders()
       );
@@ -66,7 +66,7 @@ const SubCategoryList = () => {
  
   const confirmDelete = async () => {
     try {
-      const res = await axios.delete(`http://localhost:5000/api/subcategories/${deleteModal.subCategoryId}`, getAuthHeaders());
+      const res = await axios.delete(`https://joker-hm0k.onrender.com/api/subcategories/${deleteModal.subCategoryId}`, getAuthHeaders());
       if (res.data.success) {
         toast.success("Sub-category removed successfully");
         setSubCategories(prev => prev.filter(item => item.id !== deleteModal.subCategoryId));

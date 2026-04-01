@@ -30,7 +30,7 @@ const ServiceList = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/admin/services/services', {
+      const response = await axios.get('https://joker-hm0k.onrender.com/api/admin/services/services', {
         headers: getAuthHeader()
       });
 
@@ -82,7 +82,7 @@ const ServiceList = () => {
   const toggleStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-      await axios.patch(`http://localhost:5000/api/admin/services/services/${id}/status`, 
+      await axios.patch(`https://joker-hm0k.onrender.com/api/admin/services/services/${id}/status`, 
         { status: newStatus },
         { headers: getAuthHeader() }
       );
@@ -98,7 +98,7 @@ const ServiceList = () => {
   // 4. Delete Service
   const confirmDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/admin/services/services/${deleteModal.serviceId}`, {
+      await axios.delete(`https://joker-hm0k.onrender.com/api/admin/services/services/${deleteModal.serviceId}`, {
         headers: getAuthHeader()
       });
       setServices(services.filter(s => s.service_id !== deleteModal.serviceId));

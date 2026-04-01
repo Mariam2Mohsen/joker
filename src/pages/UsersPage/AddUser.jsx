@@ -29,7 +29,7 @@ const AddUser = () => {
       const fetchUserData = async () => {
         try {
         
-          const response = await axios.get(`http://localhost:5000/api/users/get_users`);
+          const response = await axios.get(`https://joker-hm0k.onrender.com/api/users/get_users`);
           if (response.data.success) {
             const allUsers = response.data.users || response.data.data || [];
             const user = allUsers.find(u => Number(u.Users_id) === Number(id));
@@ -150,14 +150,14 @@ const handleSubmit = async (e) => {
 
       if (isEditMode) {
       
-        const response = await axios.put(`http://localhost:5000/api/users/user_update/${id}`, dataToSend, config);
+        const response = await axios.put(`https://joker-hm0k.onrender.com/api/users/user_update/${id}`, dataToSend, config);
         if (response.data.success) {
           toast.success("User updated successfully! ");
           navigate('/admin/users/list');
         }
       } else {
        
-        const response = await axios.post('http://localhost:5000/api/users/user_signup', dataToSend, config);
+        const response = await axios.post('https://joker-hm0k.onrender.com/api/users/user_signup', dataToSend, config);
         if (response.data.success) {
           toast.success("User created successfully! ");
           navigate('/admin/users/list');

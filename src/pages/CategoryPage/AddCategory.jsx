@@ -23,7 +23,7 @@ const CategoryForm = () => {
     if (isEditMode) {
       const fetchCategory = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/categories/${id}`);
+          const response = await axios.get(`https://joker-hm0k.onrender.com/api/categories/${id}`);
           if (response.data.success) {
             const cat = response.data.data;
             setFormData({
@@ -85,8 +85,8 @@ const CategoryForm = () => {
     try {
       const token = localStorage.getItem('token');
       const url = isEditMode 
-        ? `http://localhost:5000/api/categories/${id}` 
-        : `http://localhost:5000/api/categories`;
+        ? `https://joker-hm0k.onrender.com/api/categories/${id}` 
+        : `https://joker-hm0k.onrender.com/api/categories`;
       
       const method = isEditMode ? 'put' : 'post';
 

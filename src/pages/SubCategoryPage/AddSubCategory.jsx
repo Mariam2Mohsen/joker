@@ -19,7 +19,6 @@ const AddSubCategory = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
 
-    // الـ CSS Classes اللي كنتِ مستخدماها
     const labelClass = "block text-[11px] font-black text-[#102C57] mb-2 uppercase tracking-tight";
     const inputBaseClass = "w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-[#102C57]/10 focus:border-[#102C57] outline-none text-xs transition-all bg-[#FEFAF6] placeholder:text-[#DAC0A3]/60";
     const errorTextClass = "text-[#E72929] text-[9px] mt-1 font-black text-right uppercase tracking-wider block w-full";
@@ -38,18 +37,18 @@ const AddSubCategory = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                // 1. جلب الكاتيجوريز عشان الـ Dropdown
-                const resCat = await axios.get('http://localhost:5000/api/categories', getAuthHeaders());
+                
+                const resCat = await axios.get('https://joker-hm0k.onrender.com/api/categories', getAuthHeaders());
                 if (resCat.data.success) {
                     setCategories(resCat.data.data);
                 }
 
-                // 2. لو إحنا في مود التعديل، نجيب بيانات الـ SubCategory
+               
                 if (isEditMode) {
-                    const resSub = await axios.get(`http://localhost:5000/api/subcategories/${id}`, getAuthHeaders());
+                    const resSub = await axios.get(`https://joker-hm0k.onrender.com/api/subcategories/${id}`, getAuthHeaders());
                     if (resSub.data.success) {
                         const data = resSub.data.data;
-                        // ملاحظة: الباك اند بيبعت البيانات بأسماء معينة، لازم نتأكد إننا بنسكنها صح
+                       
                         setFormData({
                             name: data.name || '',
                             category_id: data.category_id || '',
@@ -84,10 +83,10 @@ const AddSubCategory = () => {
 
         try {
             const url = isEditMode 
-                ? `http://localhost:5000/api/subcategories/${id}` 
-                : `http://localhost:5000/api/subcategories`;
+                ? `https://joker-hm0k.onrender.com/api/subcategories/${id}` 
+                : `https://joker-hm0k.onrender.com/api/subcategories`;
             
-            // لو تعديل نستخدم PUT زي ما هو متحدد في الـ Route بتاعك
+          
             const method = isEditMode ? 'put' : 'post';
 
             const response = await axios[method](url, formData, getAuthHeaders());

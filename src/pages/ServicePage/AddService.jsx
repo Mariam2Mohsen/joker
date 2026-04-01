@@ -25,17 +25,17 @@ const AddService = () => {
 
   const [errors, setErrors] = useState({});
 
-  // 1. جلب الهيدرز للتوثيق
+  
   const getAuthHeaders = useCallback(() => {
     const token = localStorage.getItem('token');
     return { Authorization: `Bearer ${token}` };
   }, []);
 
-  // 2. جلب التصنيفات الرئيسية
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/categories', { 
+        const res = await axios.get('https://joker-hm0k.onrender.com/api/categories', { 
           headers: getAuthHeaders() 
         });
         if (res.data.success) setCategories(res.data.data || []);
@@ -46,7 +46,7 @@ const AddService = () => {
     fetchCategories();
   }, [getAuthHeaders]); 
 
-  // 3. التعديل الذهبي: جلب التصنيفات الفرعية باستخدام الـ Filter
+  
   useEffect(() => {
     const fetchSub = async () => {
       if (!formData.category) {
@@ -54,13 +54,13 @@ const AddService = () => {
         return;
       }
       try {
-        // نستخدم الـ query string ?category_id كما يتوقع الـ Backend Controller
-        const res = await axios.get(`http://localhost:5000/api/subcategories?category_id=${formData.category}`, { 
+       
+        const res = await axios.get(`https://joker-hm0k.onrender.com/api/subcategories?category_id=${formData.category}`, { 
           headers: getAuthHeaders() 
         });
         
         if (res.data.success) {
-          // الـ Backend يرجع البيانات تحت مسمى data كـ Array
+          
           setSubCategories(res.data.data || []);
         }
       } catch (err) {
@@ -72,11 +72,11 @@ const AddService = () => {
     fetchSub();
   }, [formData.category, getAuthHeaders]); 
 
-  // 4. جلب بيانات الخدمة في حالة التعديل
+
   useEffect(() => {
     const fetchService = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/admin/services/services/${id}`, { 
+        const res = await axios.get(`https://joker-hm0k.onrender.com/api/admin/services/services/${id}`, { 
           headers: getAuthHeaders() 
         });
         if (res.data.success) {
@@ -158,8 +158,8 @@ const AddService = () => {
 
     try {
       const url = isEditMode
-        ? `http://localhost:5000/api/admin/services/services/${id}`
-        : `http://localhost:5000/api/admin/services/services`;
+        ? `https://joker-hm0k.onrender.com/api/admin/services/services/${id}`
+        : `https://joker-hm0k.onrender.com/api/admin/services/services`;
 
       const response = await axios({
         method: isEditMode ? 'put' : 'post',
