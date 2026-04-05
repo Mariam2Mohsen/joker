@@ -1,0 +1,103 @@
+PETRA API DOCUMENTATION
+=======================
+
+BASE URL: http://localhost:5000/api
+
+1. AUTHENTICATION & USER MANAGEMENT (/api/users)
+-----------------------------------------------
+- POST /user_signup
+  * Purpose: Create a new account.
+  * Roles: 'customer' (auto-approved), 'provider' (starts as Pending).
+  * Payload: Full_Name, Email, Password, Role, Phone, etc.
+- POST /user_login
+  * Purpose: Authenticate user and receive JWT Token.
+  * Payload: Email, Password.
+- GET /get_users
+  * Purpose: List all registered users (Admin).
+- PUT /user_update/:id
+  * Purpose: Update user profile details.
+- DELETE /user_delete/:id
+  * Purpose: Delete a user account (soft delete).
+- POST /upload_image
+  * Purpose: Generic endpoint to upload an image and get filename.
+
+2. CATEGORIES API (/api/categories)
+----------------------------------
+- GET /
+  * Purpose: Fetch all categories (Public).
+- GET /:id
+  * Purpose: Fetch details of a specific category (Public).
+- POST /
+  * Purpose: Create a new service category (Admin).
+  * Requires: Authentication + Admin Role.
+- PUT /:id
+  * Purpose: Update category info or image (Admin).
+- DELETE /:id
+  * Purpose: Delete a category (Admin).
+- PATCH /:id/status
+  * Purpose: Toggle category status between Active/Inactive (Admin).
+
+3. SUB-CATEGORIES API (/api/subcategories)
+-----------------------------------------
+- GET /
+  * Purpose: Fetch all sub-categories (Public).
+- GET /:id
+  * Purpose: Fetch details of a specific sub-category (Public).
+- POST /
+  * Purpose: Create a sub-category under a category (Admin).
+- PUT /:id
+  * Purpose: Update sub-category details (Admin).
+- DELETE /:id
+  * Purpose: Delete a sub-category (Admin).
+- PATCH /:id/status
+  * Purpose: Toggle sub-category status (Admin).
+
+4. GLOBAL SERVICE CATALOG (/api/services)
+----------------------------------------
+- GET /
+  * Purpose: List all active general services with their pricing tiers (Public).
+- GET /:id
+  * Purpose: Get detailed info and metadata for a specific catalog service (Public).
+
+5. ADMIN - PROVIDER MANAGEMENT (/api/admin)
+------------------------------------------
+- GET /providers/approved
+  * Purpose: List all providers with an 'Active' account status.
+- GET /providers/pending
+  * Purpose: List providers waiting for account approval.
+- GET /providers/:id
+  * Purpose: Comprehensive view of a provider's profile, including their services, bookings, and reviews.
+- PUT /provider-action/:id
+  * Purpose: Approve or Reject a provider's account.
+
+6. ADMIN - SERVICE MANAGEMENT (/api/admin/services)
+--------------------------------------------------
+- GET /
+  * Purpose: View the entire service catalog.
+- POST /
+  * Purpose: Add a new service to the global catalog.
+- PUT /:id
+  * Purpose: Update catalog service (commission, discount, pricing types).
+- DELETE /:id
+  * Purpose: Permanently remove a service from catalog.
+- GET /requests/pending
+  * Purpose: View services submitted by providers awaiting admin approval.
+- POST /requests/:requestId/approve
+  * Purpose: Officially approve a service request and make it live on the provider's profile.
+- POST /requests/:requestId/reject
+  * Purpose: Decline a service request with an optional reason.
+
+7. PROVIDER SERVICES (/api/provider/services)
+--------------------------------------------
+- GET /
+  * Purpose: View services currently being offered by the logged-in provider.
+- GET /pending
+  * Purpose: View services that are currently 'Pending' admin approval.
+- POST /
+  * Purpose: Submit a new service request for admin review.
+- PUT /:id
+  * Purpose: Update availability, description, or pricing for an existing service.
+- PATCH /:id/toggle
+  * Purpose: Quickly Activate/Deactivate a service from the marketplace.
+- DELETE /:id
+  * Purpose: Remove a service from the provider's profile.
