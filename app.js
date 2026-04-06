@@ -44,6 +44,7 @@ app.use('/api/services', require('./src/routes/services'));
 app.use('/api/provider/services', require('./src/routes/providerServices'));
 app.use('/api/admin', require('./src/routes/adminRoutes'));
 app.use('/api/admin/services', require('./src/routes/adminServicesRoutes'));
+app.use('/api/providers', require('./src/routes/publicProviderRoutes'));
 
 app.use((err, req, res, next) => {
   console.error('🔥 Global Error Handler:', err);

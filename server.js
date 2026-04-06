@@ -14,6 +14,7 @@ const userRoutes = require("./src/routes/userRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const serviceRoutes = require("./src/routes/services");
 const providerServiceRoutes = require("./src/routes/providerServices");
+const publicProviderRoutes = require("./src/routes/publicProviderRoutes");
 
 const app = express();
 const server = http.createServer(app); ////////////////////
@@ -48,7 +49,7 @@ const port = process.env.PORT;
 // Middleware
 app.use(
   cors({
-    origin: [process.env.CLIENT_URL ,'https://petrajuniors.org','http://localhost:3000'],
+    origin: [process.env.CLIENT_URL ,'https://petrajuniors.org','http://localhost:3000','http://localhost:3001'],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With"],
@@ -80,6 +81,7 @@ app.use("/api/admin/services", adminServicesRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/provider/services", providerServiceRoutes);
 
+ app.use("/api/providers", publicProviderRoutes);
 // Root Route - API Overview
 app.get("/", (req, res) => {
   res.status(200).json({

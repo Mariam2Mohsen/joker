@@ -31,9 +31,8 @@ const signupValidation = [
   // Provider-only Validation: Services must be an array
   body("services")
     .optional()
-    .if(body("Role").equals("provider"))
-    .isArray({ min: 1 }).withMessage("At least one service is required for providers"),
-
+    .if(body("Role").equals("provider")),
+   
   // Provider-only Validation: Price cannot be negative
   body("services.*.prices.*.price")
     .optional()
@@ -44,7 +43,6 @@ const signupValidation = [
   body("services.*.service_id")
     .optional()
     .if(body("Role").equals("provider"))
-    .isInt({ min: 1 }).withMessage("Valid service_id is required"),
 ];
 
 const loginValidation = [

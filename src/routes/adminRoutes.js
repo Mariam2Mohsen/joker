@@ -5,6 +5,14 @@ const auth = require("../middleware/auth");
 const adminProviderController = require("../controller/adminProviderController");
 const adminController = require('../controller/adminController');
 
+
+
+router.use(auth);
+router.get('/notifications', adminController.getNotifications);
+
+router.put('/notifications',  adminController.markAllAsRead);
+
+
 // Admin Authentication Middleware
 const adminAuth = (req, res, next) => {
     // role_id = 1 = Admin, role_id = 2 = Admin User
@@ -16,12 +24,6 @@ const adminAuth = (req, res, next) => {
     }
     next();
 };
-
-router.use(auth);
-router.get('/notifications', adminController.getNotifications);
-
-router.put('/notifications',  adminController.markAllAsRead);
-
 router.use(adminAuth);
 
 
@@ -37,6 +39,7 @@ router.get("/providers/approved", (req, res) => {
 });
 
 // Get detailed info for a specific provider
+
 router.get("/providers/:id", adminProviderController.getProviderDetails);
 
 // Update provider account status
