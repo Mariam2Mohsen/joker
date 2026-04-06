@@ -113,7 +113,7 @@ exports.createSubCategory = async (req, res) => {
     }
 
     // SRS: Only active categories can have sub-categories
-    if (cat[0].status !== 'Active') {
+    if (cat[0].status !== 'active') {
       return res.status(400).json({
         success: false,
         message: "Cannot add sub-category to inactive category"
