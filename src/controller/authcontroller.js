@@ -228,7 +228,7 @@ exports.login = async (req, res) => {
   try {
     const { Email, Password } = req.body;
 
-    const [rows] = await pool.query("SELECT * FROM users WHERE Email=?AND is_deleted = 0", [Email]);
+    const [rows] = await pool.query("SELECT * FROM users WHERE Email=?AND is_deleted = 0 AND LOWER(account_status) = 'active'", [Email]);
 
     if (!rows.length) {
       return res.status(404).json({ success: false, message: "User not found" });
