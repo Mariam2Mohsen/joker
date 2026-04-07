@@ -32,6 +32,7 @@ const ServiceCard = ({
           src={service.image}
           alt={service.name}
           onError={(e) => {
+            e.target.onerror = null;
             e.target.src = `data:image/svg+xml,%3Csvg width='800' height='600' viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='800' height='600' fill='%23FEFAF6'/%3E%3Cpath d='M0 0l800 600M800 0L0 600' stroke='%23EADBC8' stroke-width='2' opacity='0.3'/%3E%3Crect x='300' y='200' width='200' height='200' rx='40' fill='%23102C57' opacity='0.05'/%3E%3Ctext x='400' y='310' font-family='Arial, sans-serif' font-size='24' font-weight='900' fill='%23102C57' opacity='0.2' text-anchor='middle' text-transform='uppercase' letter-spacing='4'%3ENO IMAGE%3C/text%3E%3C/svg%3E`;
           }}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -87,9 +88,13 @@ const ServiceCard = ({
         <div className="flex items-center gap-3 bg-[#FEFAF6] rounded-2xl px-4 py-3 border border-[#EADBC8]/40">
           {/* Avatar placeholder */}
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#102C57] to-[#1a3f7a] flex items-center justify-center flex-shrink-0 shadow-md">
-            <span className="text-white text-[11px] font-black uppercase leading-none">
-              {(service.provider || '?')[0]}
-            </span>
+            {service.providerAvatar ? (
+               <img src={service.providerAvatar} alt={service.provider} className="w-full h-full rounded-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.innerHTML = `<span class="text-white text-[11px] font-black uppercase leading-none">${(service.provider || '?')[0]}</span>`; }} />
+            ) : (
+               <span className="text-white text-[11px] font-black uppercase leading-none">
+                 {(service.provider || '?')[0]}
+               </span>
+            )}
           </div>
           <div className="min-w-0">
             <p className="text-[8px] font-black uppercase tracking-widest text-[#102C57]/35 leading-none mb-0.5">Expert Provider</p>

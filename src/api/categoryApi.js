@@ -20,15 +20,19 @@ const slugify = (text) => {
 const getSuitableImage = (existingImage) => {
   const ZERO_STATE_SVG = `data:image/svg+xml,%3Csvg width='800' height='600' viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='800' height='600' fill='%23FEFAF6'/%3E%3Cpath d='M0 0l800 600M800 0L0 600' stroke='%23EADBC8' stroke-width='2' opacity='0.3'/%3E%3Crect x='300' y='200' width='200' height='200' rx='40' fill='%23102C57' opacity='0.05'/%3E%3Ctext x='400' y='310' font-family='Arial, sans-serif' font-size='24' font-weight='900' fill='%23102C57' opacity='0.2' text-anchor='middle' text-transform='uppercase' letter-spacing='4'%3ENO IMAGE%3C/text%3E%3C/svg%3E`;
 
-  if (existingImage && existingImage.includes("-")) {
-    return `${IMAGE_BASE_URL}/categories/${existingImage}`;
+  if (!existingImage || existingImage.trim() === '') return ZERO_STATE_SVG;
+
+  if (existingImage.startsWith('http://') || existingImage.startsWith('https://')) {
+    return existingImage;
   }
 
-  if (
-    existingImage &&
-    (existingImage.startsWith("http") || existingImage.includes("."))
-  ) {
-    if (existingImage.startsWith("http")) return existingImage;
+  if (existingImage.startsWith('/')) {
+    return `https://joker-hm0k.onrender.com${existingImage}`;
+  }
+
+
+  if (existingImage.includes('.')) {
+    return `${IMAGE_BASE_URL}/${existingImage}`;
   }
 
   return ZERO_STATE_SVG;

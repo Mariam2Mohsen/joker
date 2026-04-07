@@ -116,7 +116,7 @@ const MyServicesPage = () => {
                        <div className="relative group/avatar">
                           <div className="w-20 h-20 rounded-[2rem] bg-[#102C57] text-[#FEFAF6] flex items-center justify-center font-black text-xl shadow-2xl transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 relative overflow-hidden border-4 border-white">
                              {svc.image ? (
-                               <img src={`https://joker-hm0k.onrender.com/images/${svc.image}`} alt="" className="w-full h-full object-cover" />
+                               <img src={`https://joker-hm0k.onrender.com/images/${svc.image}`} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                              ) : svc.service_name[0]}
                              <div className="absolute inset-0 bg-gradient-to-tr from-black/30 to-transparent"></div>
                           </div>
@@ -183,7 +183,7 @@ const MyServicesPage = () => {
                           <div className="flex items-center gap-8">
                             <div className="w-16 h-16 rounded-[1.25rem] bg-[#102C57] text-[#FEFAF6] flex items-center justify-center font-black text-xs shadow-2xl relative overflow-hidden transform group-hover/row:scale-110 transition-transform">
                                {svc.image ? (
-                                 <img src={`https://joker-hm0k.onrender.com/images/${svc.image}`} alt="" className="w-full h-full object-cover" />
+                                 <img src={`https://joker-hm0k.onrender.com/images/${svc.image}`} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                                ) : svc.service_name[0]}
                                <div className="absolute inset-0 bg-black/20"></div>
                             </div>

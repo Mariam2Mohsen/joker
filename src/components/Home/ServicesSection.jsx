@@ -32,7 +32,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="bg-white py-28 relative overflow-hidden border-y-2 border-[#EADBC8]/20">
+    <section className="bg-white py-14 md:py-28 relative overflow-hidden border-y-2 border-[#EADBC8]/20">
       {/* Decorative background element */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#FEFAF6] rounded-full blur-[100px] -mr-48 -mt-48 opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#DAC0A3]/5 rounded-full blur-[80px] -ml-32 -mb-32"></div>
@@ -44,7 +44,7 @@ const ServicesSection = () => {
               <span className="h-[3px] w-12 bg-[#DAC0A3]"></span>
               <span className="text-[11px] font-black uppercase tracking-[0.5em] text-[#DAC0A3]">Premium discovery</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-6">
+            <h2 className="text-3xl md:text-6xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-4 md:mb-6">
               Explore Our <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#102C57] via-[#DAC0A3] to-[#102C57]">Expert Services</span>
             </h2>
             <p className="text-[#102C57]/60 font-bold leading-relaxed text-lg max-w-xl">

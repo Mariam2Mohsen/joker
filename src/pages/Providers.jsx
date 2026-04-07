@@ -28,19 +28,19 @@ const Providers = () => {
           <div className="absolute top-[10%] right-[-10%] w-[40%] h-[80%] rounded-full bg-[#102C57]/10 blur-3xl opacity-40"></div>
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20 relative z-10">
           
-          <div className="text-center mb-16 md:mb-24 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="text-center mb-10 md:mb-24 animate-in fade-in slide-in-from-top-4 duration-700">
             <h4 className="text-[#DAC0A3] font-black uppercase tracking-[0.3em] text-sm mb-4">Our Elite Network</h4>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#102C57] tracking-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#102C57] tracking-tight">
               Meet Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#102C57] to-[#DAC0A3]">Skilled Providers</span>
             </h1>
-            <p className="mt-6 text-base md:text-lg text-[#102C57]/70 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-4 md:mt-6 text-base md:text-lg text-[#102C57]/70 max-w-2xl mx-auto leading-relaxed">
               Find and connect with highly vetted professionals. We ensure you get the best service, reliability, and local trust.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-10">
             {isLoading ? (
               <div className="col-span-full h-64 flex items-center justify-center">
                 <div className="w-12 h-12 border-4 border-[#DAC0A3] border-t-transparent rounded-full animate-spin"></div>
@@ -62,6 +62,7 @@ const Providers = () => {
                         src={provider.avatar}
                         alt={provider.name}
                         className="w-full h-full object-cover"
+                        onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = `data:image/svg+xml,%3Csvg width='150' height='150' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='150' height='150' fill='%23FEFAF6'/%3E%3Ccircle cx='75' cy='55' r='25' fill='%23102C57' opacity='0.2'/%3E%3Cpath d='M30 120 C 30 90, 120 90, 120 120' stroke='%23102C57' stroke-width='8' fill='none' opacity='0.2'/%3E%3C/svg%3E`; }}
                       />
                     </div>
 

@@ -59,29 +59,40 @@ const HomeProvider = () => {
     fetchDashboardStats();
   }, [token]);
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[#FEFAF6] font-sans selection:bg-[#102C57] selection:text-white">
       <TopHeader />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 p-10 overflow-auto scroll-smooth relative">
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden relative">
+        <div className={`absolute inset-0 z-40 bg-black/50 transition-opacity md:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`} onClick={() => setMobileMenuOpen(false)}></div>
+        <div className={`absolute md:relative z-50 h-full transition-transform duration-300 md:translate-x-0 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+          <Sidebar />
+        </div>
+        <main className="flex-1 p-4 md:p-10 overflow-auto scroll-smooth relative w-full">
+          <div className="md:hidden flex justify-between items-center mb-4">
+             <button onClick={() => setMobileMenuOpen(true)} className="p-2 bg-white rounded-xl border border-[#EADBC8] shadow-sm flex items-center gap-2 text-xs font-black uppercase text-[#102C57]">
+               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+               Menu
+             </button>
+          </div>
           {/* Subtle Ambient Background Mesh */}
           <div className="absolute right-0 top-0 w-full h-full bg-[radial-gradient(circle_at_100%_0%,#EADBC8_0,transparent_15%)] opacity-30 pointer-events-none"></div>
 
-          <div className="max-w-7xl mx-auto py-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 items-start space-y-12">
+          <div className="max-w-7xl mx-auto py-4 md:py-10 animate-in fade-in slide-in-from-bottom-8 duration-1000 items-start space-y-8 md:space-y-12">
             
             {/* Intelligent Greeting Header */}
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-12 bg-white rounded-[4rem] border border-[#EADBC8]/40 shadow-2xl relative overflow-hidden group/header transition-all duration-700 hover:shadow-black/5">
+            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-6 md:p-12 bg-white rounded-[2.5rem] md:rounded-[4rem] border border-[#EADBC8]/40 shadow-2xl relative overflow-hidden group/header transition-all duration-700 hover:shadow-black/5">
                <div className="absolute top-0 right-0 w-[40%] h-full bg-[#102C57]/5 backdrop-blur-[10px] skew-x-[15deg] translate-x-[10%] group-hover/header:translate-x-0 transition-transform duration-1000"></div>
                <div className="relative z-10 max-w-lg">
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex flex-wrap items-center gap-4 mb-6">
                      <div className="px-4 py-2 bg-[#102C57] text-[#FEFAF6] rounded-xl text-[10px] font-black uppercase tracking-[0.3em] shadow-lg shadow-[#102C57]/20">CORE: 1.2</div>
                      <div className="flex items-center gap-2 group-hover/header:scale-110 transition-transform">
                         <Activity size={14} className="text-[#DAC0A3]" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-[#DAC0A3]">Operational Link: OK</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-[#DAC0A3] hidden sm:inline">Operational Link: OK</span>
                      </div>
                   </div>
-                  <h1 className="text-5xl font-black text-[#102C57] tracking-tighter leading-tight group-hover/header:translate-x-1 transition-transform mb-3">Intelligence Terminal</h1>
+                  <h1 className="text-4xl md:text-5xl font-black text-[#102C57] tracking-tighter leading-tight group-hover/header:translate-x-1 transition-transform mb-3">Intelligence Terminal</h1>
                   <p className="text-[11px] font-black uppercase text-[#DAC0A3] tracking-[0.1em] opacity-80 leading-relaxed md:w-3/4 italic">
                     Successfully integrated with Petra Global Database. Current operational status is optimized for high-demand services.
                   </p>
@@ -138,8 +149,8 @@ const HomeProvider = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               {/* Intelligent Timeline Analytics */}
-              <div className="lg:col-span-2 bg-white rounded-[4rem] border border-[#EADBC8] p-12 shadow-2xl relative overflow-hidden transition-all duration-700 hover:shadow-black/5">
-                <div className="flex justify-between items-center mb-12">
+              <div className="lg:col-span-2 bg-white rounded-[2rem] md:rounded-[4rem] border border-[#EADBC8] p-6 md:p-12 shadow-2xl relative overflow-hidden transition-all duration-700 hover:shadow-black/5">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8 md:mb-12">
                   <div className="flex items-center gap-4">
                     <div className="w-3 h-10 bg-[#102C57] rounded-full"></div>
                     <div>
@@ -147,9 +158,9 @@ const HomeProvider = () => {
                       <p className="text-[10px] font-black uppercase text-[#DAC0A3] tracking-widest opacity-60">Successive Log Events</p>
                     </div>
                   </div>
-                  <div className="flex gap-3">
-                     <button className="text-[10px] font-black text-[#DAC0A3] uppercase hover:text-[#102C57] transition-all bg-[#FEFAF6] w-12 h-12 flex items-center justify-center rounded-2xl border border-[#EADBC8]/40 shadow-sm active:scale-90"><Activity size={18} /></button>
-                     <button className="text-[10px] font-black text-[#DAC0A3] uppercase hover:text-[#102C57] transition-all bg-[#FEFAF6] px-8 py-3 rounded-2xl border border-[#EADBC8]/40 shadow-sm hover:shadow-lg active:scale-95">LOG CENTER →</button>
+                  <div className="flex gap-3 w-full md:w-auto">
+                     <button className="text-[10px] font-black text-[#DAC0A3] uppercase hover:text-[#102C57] transition-all bg-[#FEFAF6] w-12 h-12 flex items-center justify-center rounded-2xl border border-[#EADBC8]/40 shadow-sm active:scale-90 flex-shrink-0"><Activity size={18} /></button>
+                     <button className="w-full md:w-auto text-[10px] font-black text-[#DAC0A3] uppercase hover:text-[#102C57] transition-all bg-[#FEFAF6] px-8 py-3 rounded-2xl border border-[#EADBC8]/40 shadow-sm hover:shadow-lg active:scale-95">LOG CENTER →</button>
                   </div>
                 </div>
                 
@@ -180,7 +191,7 @@ const HomeProvider = () => {
               </div>
 
               {/* Master Terminal Hub */}
-              <div className="bg-[#102C57] rounded-[4.5rem] p-12 shadow-3xl text-white relative overflow-hidden group/main grid content-start gap-10">
+              <div className="bg-[#102C57] rounded-[2rem] md:rounded-[4.5rem] p-6 md:p-12 shadow-3xl text-white relative overflow-hidden group/main grid content-start gap-10">
                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,#DAC0A3_0,transparent_30%)] opacity-10 pointer-events-none group-hover:opacity-20 transition-opacity duration-1000"></div>
                  <div>
                     <h3 className="text-sm font-black uppercase tracking-[0.4em] mb-12 text-[#DAC0A3] flex items-center gap-4">

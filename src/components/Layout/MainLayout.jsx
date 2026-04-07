@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Bell } from 'lucide-react';
+import io from "socket.io-client";
 import Logo from '../UI/Logo';
 import { useAuth } from '../../hooks/useAuth';
 import { useCategories } from '../../hooks/useCategories';
@@ -20,6 +22,7 @@ const MainLayout = ({ children }) => {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { categories: allCategories } = useCategories();
 
   React.useEffect(() => {
@@ -28,6 +31,87 @@ const MainLayout = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
+  const [showNotifMenu, setShowNotifMenu] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  const SERVER_URL = "https://joker-hm0k.onrender.com";
+  const currentUserId = user?.userId || user?.user_id || user?.id;
+
+  const markAllAsRead = async () => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) return;
+      const response = await fetch(`${SERVER_URL}/api/admin/notifications`, {
+        method: 'PUT',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setUnreadCount(0); 
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: 1 })));
+      }
+    } catch (err) {
+      console.error("❌ Error marking notifications as read:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && currentUserId) {
+      const fetchNotifications = async () => {
+        try {
+          const token = localStorage.getItem('authToken'); 
+          if (!token) return;
+          const response = await fetch(`${SERVER_URL}/api/admin/notifications`, {
+            headers: { 
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+            }
+          });
+          const data = await response.json();
+          if (data.success) {
+            setNotifications(data.notifications || []);
+            setUnreadCount((data.notifications || []).filter(n => n.is_read === 0).length);
+          }
+        } catch (err) {}
+      };
+
+      fetchNotifications();
+
+      const socket = io(SERVER_URL, {
+        withCredentials: true,
+        transports: ['websocket', 'polling']
+      });
+
+      const channelName = `notification_user_${currentUserId}`;
+      socket.on(channelName, (newNotif) => {
+        setNotifications(prev => [
+          {
+            ...newNotif,
+            created_at: newNotif.created_at || new Date().toISOString(),
+            is_read: 0
+          }, 
+          ...prev
+        ]);
+        setUnreadCount(prev => prev + 1);
+      });
+
+      return () => socket.disconnect();
+    }
+  }, [isLoggedIn, currentUserId]);
+
+  const handleToggleNotif = () => {
+    const nextState = !showNotifMenu;
+    setShowNotifMenu(nextState);
+    setShowUserMenu(false);
+    if (nextState && unreadCount > 0) {
+      markAllAsRead();
+    }
+  };
+
   const searchResults = useMemo(() => {
     if (searchQuery.length < 2 || !allCategories) return [];
     const query = searchQuery.toLowerCase();
@@ -56,19 +140,21 @@ const MainLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen font-sans bg-[#FEFAF6]">
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-xl' : 'bg-[#FEFAF6] py-2'
+        isScrolled ? 'bg-white/80 backdrop-blur-xl shadow-xl' : 'bg-[#FEFAF6] py-1'
       }`}>
-        <div className="flex flex-col sm:flex-row justify-between items-center px-4 md:px-10 py-3 gap-4 sm:gap-0">
-          <Link to="/" className="flex items-center hover:scale-105 transition-transform">
-            <Logo className="h-10" />
+        {/* ── Top bar: logo + auth buttons ── */}
+        <div className="flex justify-between items-center px-4 md:px-10 py-3 gap-4">
+          <Link to="/" className="flex items-center hover:scale-105 transition-transform flex-shrink-0">
+            <Logo className="h-9 md:h-10" />
           </Link>
-          
-          <div className="flex items-center gap-6">
+
+          {/* Desktop auth */}
+          <div className="hidden md:flex items-center gap-6">
             {!isLoggedIn ? (
               <div className="flex gap-3">
                 <Link
                   to="/signup-customer"
-                  className="border-2 border-[#102C57] rounded-xl px-5 py-2 text-xs font-bold uppercase text-[#102C57] hover:bg-[#102C57] hover:text-[#FEFAF6] transition-all dropdown-shadow"
+                  className="border-2 border-[#102C57] rounded-xl px-5 py-2 text-xs font-bold uppercase text-[#102C57] hover:bg-[#102C57] hover:text-[#FEFAF6] transition-all"
                 >
                   Sign Up
                 </Link>
@@ -81,17 +167,56 @@ const MainLayout = ({ children }) => {
               </div>
             ) : (
               <div className="flex items-center gap-5">
-                <button className="relative p-2 text-[#102C57]/60 hover:text-[#102C57] transition-colors group">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                  </svg>
-                  <span className="absolute top-1.5 right-1.5 w-3 h-3 bg-[#A855F7] border-2 border-[#FEFAF6] rounded-full shadow-sm group-hover:scale-110 transition-transform"></span>
-                </button>
-
-               
+                {/* Notifications Bell */}
                 <div className="relative">
                   <button 
-                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    type="button"
+                    className="relative p-2.5 bg-white rounded-full text-[#102C57] hover:bg-[#102C57] hover:text-white transition-all shadow-sm border border-[#EADBC8]/50"
+                    onClick={handleToggleNotif}
+                  >
+                    <Bell size={18} />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 text-[8px] font-black bg-[#A855F7] text-white w-4 h-4 flex items-center justify-center rounded-full border-2 border-white animate-pulse">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </button>
+
+                  {showNotifMenu && (
+                    <>
+                      <div className="fixed inset-0 z-10" onClick={() => setShowNotifMenu(false)}></div>
+                      <div className="absolute right-0 mt-3 w-80 bg-white rounded-3xl shadow-2xl border border-[#EADBC8]/30 py-4 z-20 animate-in fade-in slide-in-from-top-2 duration-300">
+                        <div className="px-5 pb-3 border-b border-[#EADBC8]/20 flex justify-between items-center">
+                          <span className="text-[10px] font-black uppercase tracking-widest text-[#102C57]">Notifications</span>
+                          {unreadCount > 0 && <span className="text-[8px] font-bold text-[#A855F7] bg-[#A855F7]/10 px-2 py-0.5 rounded-full">New</span>}
+                        </div>
+                        
+                        <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                          {notifications.length > 0 ? (
+                            notifications.map((notif, idx) => (
+                              <div key={idx} className={`px-5 py-4 hover:bg-[#FEFAF6] transition-colors border-b border-[#FEFAF6] last:border-0 ${notif.is_read === 0 ? 'bg-[#102C57]/5' : ''}`}>
+                                <p className="text-[11px] text-[#102C57]/80 leading-relaxed font-medium">
+                                  {notif.message}
+                                </p>
+                                <span className="text-[8px] text-[#DAC0A3] font-bold uppercase mt-1 block">
+                                  {notif.type || 'System'} • {new Date(notif.created_at).toLocaleString()}
+                                </span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="py-10 text-center">
+                              <p className="text-[10px] font-black uppercase text-[#102C57]/30">No notifications yet</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div className="relative">
+                  <button
+                    onClick={() => { setShowUserMenu(!showUserMenu); setShowNotifMenu(false); }}
                     className="flex items-center gap-3 group focus:outline-none"
                   >
                     <div className="w-10 h-10 rounded-full bg-[#102C57] text-[#FEFAF6] flex items-center justify-center font-black text-xs border-2 border-[#102C57]/10 group-hover:border-[#102C57] transition-all relative">
@@ -102,25 +227,25 @@ const MainLayout = ({ children }) => {
 
                   {showUserMenu && (
                     <>
-                      <div 
-                        className="fixed inset-0 z-10" 
+                      <div
+                        className="fixed inset-0 z-10"
                         onClick={() => setShowUserMenu(false)}
                       ></div>
-                      <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 py-2 z-20 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <div className="absolute right-0 mt-3 w-48 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 py-2 z-20">
                         <div className="px-4 py-3 border-b border-[#EADBC8]/20 flex flex-col">
                           <span className="text-[10px] font-black uppercase tracking-widest text-[#102C57]">
                             {user?.firstName ? `${user.firstName} ${user.lastName}` : 'Welcome Back'}
                           </span>
                           <span className="text-[8px] font-bold text-[#102C57]/40 truncate">{user?.email}</span>
                         </div>
-                        <Link 
-                          to="/dash" 
+                        <Link
+                          to="/dash"
                           className="flex items-center gap-3 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-[#102C57]/60 hover:text-[#102C57] hover:bg-[#FEFAF6] transition-all"
                           onClick={() => setShowUserMenu(false)}
                         >
                           👤 Profile
                         </Link>
-                        <button 
+                        <button
                           onClick={() => {
                             setShowLogoutModal(true);
                             setShowUserMenu(false);
@@ -136,30 +261,61 @@ const MainLayout = ({ children }) => {
               </div>
             )}
           </div>
+
+          {/* Mobile: hamburger + auth icons */}
+          <div className="flex md:hidden items-center gap-3">
+            {isLoggedIn && (
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="w-9 h-9 rounded-full bg-[#102C57] text-[#FEFAF6] flex items-center justify-center font-black text-xs relative"
+              >
+                {getUserInitials()}
+                {showUserMenu && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setShowUserMenu(false)}></div>
+                    <div className="absolute right-0 top-12 w-48 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 py-2 z-20">
+                      <Link to="/dash" className="flex items-center gap-3 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-[#102C57]/60 hover:text-[#102C57] hover:bg-[#FEFAF6] transition-all" onClick={() => setShowUserMenu(false)}>👤 Profile</Link>
+                      <button onClick={() => { setShowLogoutModal(true); setShowUserMenu(false); }} className="w-full flex items-center gap-3 px-4 py-2.5 text-[10px] font-black uppercase tracking-widest text-[#102C57]/60 hover:text-red-500 hover:bg-red-50 transition-all text-left">🚪 Log Out</button>
+                    </div>
+                  </>
+                )}
+              </button>
+            )}
+            <button
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              className="w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-xl bg-[#102C57]/5 hover:bg-[#102C57]/10 transition-colors"
+              aria-label="Toggle menu"
+            >
+              <span className={`block w-5 h-0.5 bg-[#102C57] transition-all duration-300 ${mobileNavOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+              <span className={`block w-5 h-0.5 bg-[#102C57] transition-all duration-300 ${mobileNavOpen ? 'opacity-0' : ''}`}></span>
+              <span className={`block w-5 h-0.5 bg-[#102C57] transition-all duration-300 ${mobileNavOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            </button>
+          </div>
         </div>
-        
+
         {/* Modern Logout Modal */}
-        <LogoutModal 
-          isOpen={showLogoutModal} 
+        <LogoutModal
+          isOpen={showLogoutModal}
           onClose={() => setShowLogoutModal(false)}
           onConfirm={() => {
             logout();
             setShowLogoutModal(false);
           }}
         />
-        
-        <nav className={`flex flex-col md:flex-row justify-between items-center px-4 md:px-10 py-3 border-t border-[#EADBC8]/30 gap-4 md:gap-0 transition-colors ${
+
+        {/* ── Desktop nav + search ── */}
+        <nav className={`hidden md:flex flex-row justify-between items-center px-4 md:px-10 py-3 border-t border-[#EADBC8]/30 transition-colors ${
           isScrolled ? 'bg-white/10' : 'bg-white/50'
         }`}>
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+          <div className="flex flex-wrap gap-2 md:gap-4">
             <NavLink to="/" className={navLinkClass}>Home</NavLink>
             <NavLink to="/categories" className={navLinkClass}>Categories</NavLink>
             <NavLink to="/services" className={navLinkClass}>Services</NavLink>
             <NavLink to="/contact" className={navLinkClass}>Contact Us</NavLink>
           </div>
-          
-          <div className="relative w-full md:w-auto mt-2 md:mt-0">
-            <div className={`relative flex items-center transition-all duration-300 ${searchFocused ? 'md:w-80' : 'md:w-64'}`}>
+
+          <div className="relative w-auto">
+            <div className={`relative flex items-center transition-all duration-300 ${searchFocused ? 'w-80' : 'w-64'}`}>
               <input
                 type="text"
                 placeholder="Search ..."
@@ -167,12 +323,12 @@ const MainLayout = ({ children }) => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
-               onKeyUp={handleSearchKeyPress}
+                onKeyUp={handleSearchKeyPress}
                 className="border border-[#EADBC8] rounded-xl h-10 px-4 pl-10 pr-10 text-xs w-full bg-white focus:outline-none focus:border-[#102C57] focus:ring-2 focus:ring-[#102C57]/10 text-[#102C57] transition-all shadow-sm"
               />
               <span className="absolute left-3.5 text-[#102C57]/40 text-sm" aria-hidden>🔍</span>
-              {searchFocused && (searchQuery.length > 1) && (
-                <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-300">
+              {searchFocused && searchQuery.length > 1 && (
+                <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 overflow-hidden z-50">
                   <div className="p-3 bg-[#FEFAF6] border-b border-[#EADBC8]/20">
                     <span className="text-[9px] font-black uppercase tracking-widest text-[#102C57]/40">Search Suggestions</span>
                   </div>
@@ -185,7 +341,7 @@ const MainLayout = ({ children }) => {
                         className="flex items-center gap-4 p-4 hover:bg-[#FEFAF6] transition-colors border-b border-[#EADBC8]/10 last:border-0"
                       >
                         <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#EADBC8]/20 flex-shrink-0 border border-[#EADBC8]/30">
-                          <img src={item.type === 'category' ? item.image : item.parentImage} alt="" className="w-full h-full object-cover" />
+                          <img src={item.type === 'category' ? item.image : item.parentImage} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                         </div>
                         <div className="flex flex-col">
                           <span className="text-[11px] font-bold text-[#102C57] uppercase tracking-wide">{item.name}</span>
@@ -206,9 +362,70 @@ const MainLayout = ({ children }) => {
             </div>
           </div>
         </nav>
+
+        {/* ── Mobile nav drawer ── */}
+        {mobileNavOpen && (
+          <div className="md:hidden bg-white border-t border-[#EADBC8]/30 shadow-xl">
+            <div className="px-4 py-4 flex flex-col gap-1">
+              {[
+                { to: '/', label: 'Home' },
+                { to: '/categories', label: 'Categories' },
+                { to: '/services', label: 'Services' },
+                { to: '/contact', label: 'Contact Us' },
+              ].map(({ to, label }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  onClick={() => setMobileNavOpen(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-[0.25em] transition-all ${
+                      isActive
+                        ? 'text-[#FEFAF6] bg-[#102C57]'
+                        : 'text-[#102C57]/70 hover:bg-[#102C57]/5'
+                    }`
+                  }
+                >
+                  {label}
+                </NavLink>
+              ))}
+              {!isLoggedIn && (
+                <div className="flex gap-3 pt-3 border-t border-[#EADBC8]/30 mt-2">
+                  <Link to="/signup-customer" onClick={() => setMobileNavOpen(false)} className="flex-1 text-center border-2 border-[#102C57] rounded-xl px-4 py-2.5 text-xs font-bold uppercase text-[#102C57] hover:bg-[#102C57] hover:text-[#FEFAF6] transition-all">Sign Up</Link>
+                  <Link to="/login" onClick={() => setMobileNavOpen(false)} className="flex-1 text-center bg-[#102C57] text-[#FEFAF6] rounded-xl px-4 py-2.5 border-2 border-[#102C57] text-xs font-bold uppercase hover:bg-opacity-90 transition-all">Login</Link>
+                </div>
+              )}
+              {/* Mobile search */}
+              <div className="relative pt-3 border-t border-[#EADBC8]/30 mt-2">
+                <input
+                  type="text"
+                  placeholder="Search services or categories..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
+                  onKeyUp={handleSearchKeyPress}
+                  className="border border-[#EADBC8] rounded-xl h-10 px-4 pl-10 text-xs w-full bg-[#FEFAF6] focus:outline-none focus:border-[#102C57] text-[#102C57]"
+                />
+                <span className="absolute left-3.5 top-1/2 mt-1.5 text-[#102C57]/40 text-sm" aria-hidden>🔍</span>
+                {searchFocused && searchQuery.length > 1 && searchResults.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-2xl shadow-2xl border border-[#EADBC8]/30 overflow-hidden z-50">
+                    {searchResults.map((item, i) => (
+                      <Link key={i} to={item.type === 'category' ? `/services/${item.slug}` : `/services/${item.parentSlug}`} onClick={() => { setSearchQuery(''); setMobileNavOpen(false); }} className="flex items-center gap-3 p-3 hover:bg-[#FEFAF6] transition-colors border-b border-[#EADBC8]/10 last:border-0">
+                        <div className="w-8 h-8 rounded-lg overflow-hidden bg-[#EADBC8]/20 flex-shrink-0">
+                          <img src={item.type === 'category' ? item.image : item.parentImage} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
+                        </div>
+                        <span className="text-[11px] font-bold text-[#102C57] uppercase tracking-wide">{item.name}</span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
-      <main className="flex-grow flex flex-col pt-44 sm:pt-40 md:pt-32">{children}</main>
+      <main className="flex-grow flex flex-col pt-[7.5rem] md:pt-32">{children}</main>
 
       <footer className="bg-[#102C57] text-[#FEFAF6] pt-16 pb-6 mt-0">
         <div className="container mx-auto px-4 md:px-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">

@@ -9,7 +9,7 @@ const CategoriesSection = () => {
   const { categories, isLoading } = useTopCategories(6);
 
   return (
-    <section className="bg-[#FEFAF6] py-32 relative overflow-hidden">
+    <section className="bg-[#FEFAF6] py-16 md:py-32 relative overflow-hidden">
       {/* Decorative logo-aligned elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
         <div className="absolute top-10 left-10 w-64 h-64 border-2 border-[#DAC0A3]/30 rounded-full"></div>
@@ -20,11 +20,11 @@ const CategoriesSection = () => {
       <div className="container mx-auto px-4 md:px-10 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-24 animate-in fade-in slide-in-from-top-6 duration-1000">
           <div className="max-w-2xl text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-4 mb-6">
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-4 md:mb-6">
               <span className="h-[3px] w-12 bg-[#DAC0A3]"></span>
               <span className="text-[11px] font-black uppercase tracking-[0.5em] text-[#DAC0A3]">Our specialty</span>
             </div>
-            <h2 className="text-5xl md:text-7xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-8">
+            <h2 className="text-4xl md:text-7xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-4 md:mb-8">
               Discover <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#102C57] to-[#DAC0A3]">Top Categories</span>
             </h2>
             <p className="text-[#102C57]/50 font-bold text-xl leading-relaxed max-w-xl">
@@ -61,7 +61,7 @@ const CategoriesSection = () => {
         </div>
         
         {/* Bottom stylized CTA */}
-        <div className="mt-32 p-16 md:p-24 rounded-[5rem] bg-[#102C57] overflow-hidden relative shadow-3xl text-center group">
+        <div className="mt-16 md:mt-32 p-10 md:p-24 rounded-[3rem] md:rounded-[5rem] bg-[#102C57] overflow-hidden relative shadow-3xl text-center group">
           {/* THE BRAND BADGE IN THE BACKGROUND - CLEAR AND CRISP */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square flex items-center justify-center pointer-events-none transition-all duration-1000 group-hover:rotate-6 group-hover:scale-105">
             {/* Soft Glow */}
@@ -73,10 +73,10 @@ const CategoriesSection = () => {
           </div>
           
           <div className="relative z-10 flex flex-col items-center">
-            <h3 className="text-5xl md:text-6xl font-black text-[#FEFAF6] uppercase tracking-tighter mb-8 leading-none">
+            <h3 className="text-3xl md:text-6xl font-black text-[#FEFAF6] uppercase tracking-tighter mb-4 md:mb-8 leading-none">
                 Looking for <br/><span className="text-[#DAC0A3]">Custom Solutions?</span>
             </h3>
-            <p className="text-[#FEFAF6]/60 font-bold text-xl max-w-2xl leading-relaxed mb-12">
+            <p className="text-[#FEFAF6]/60 font-bold text-base md:text-xl max-w-2xl leading-relaxed mb-8 md:mb-12">
               Our support team is ready to match you with the perfect specialist for your unique requirements.
             </p>
             <Link 

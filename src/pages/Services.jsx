@@ -149,7 +149,7 @@ const Services = () => {
       <div className="min-h-screen">
 
         {/* ════ DARK HERO ════ */}
-        <div className="relative overflow-hidden pt-28 pb-20 bg-[#102C57]">
+        <div className="relative overflow-hidden pt-12 md:pt-28 pb-12 md:pb-20 bg-[#102C57]">
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#DAC0A3]/8 rounded-full blur-[120px] -mr-56 -mt-56 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/3 rounded-full blur-[80px] -ml-40 -mb-20 pointer-events-none" />
           <div
@@ -184,7 +184,7 @@ const Services = () => {
               )}
             </div>
 
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-10 lg:gap-16">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 md:gap-10 lg:gap-16">
 
               {/* Category image */}
               <div className="flex-shrink-0 animate-in fade-in zoom-in duration-700">
@@ -193,7 +193,7 @@ const Services = () => {
                 ) : category ? (
                   <div className="relative w-48 h-52 rounded-[2.5rem] overflow-visible shadow-2xl shadow-black/40 group">
                     <div className="w-full h-full rounded-[2.5rem] overflow-hidden border border-white/15">
-                      <img src={category.image} alt={category.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <img src={category.image} alt={category.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#102C57]/80 via-[#102C57]/20 to-transparent rounded-[2.5rem]" />
                     </div>
                     <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-xl flex items-center gap-1.5 z-20">
@@ -208,7 +208,7 @@ const Services = () => {
                     <div className="grid grid-cols-2 w-full h-full">
                       {(allCategories || []).slice(0, 4).map(cat => (
                         <div key={cat.id} className="relative overflow-hidden">
-                          <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" />
+                          <img src={cat.image} alt={cat.name} className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                           <div className="absolute inset-0 bg-[#102C57]/50" />
                         </div>
                       ))}
@@ -239,7 +239,7 @@ const Services = () => {
                   </div>
                 ) : (
                   <>
-                    <h1 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-5">
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-4 md:mb-5">
                       {category ? (
                         <>Explore{' '}
                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DAC0A3] via-white to-[#DAC0A3]">
@@ -409,7 +409,7 @@ const Services = () => {
                         className="flex items-center gap-4 group p-3 px-4 rounded-xl hover:bg-[#FEFAF6] transition-all"
                       >
                         <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 border border-[#EADBC8]/40 group-hover:border-[#DAC0A3]/50 transition-colors">
-                          <img src={cat.image} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                          <img src={cat.image} alt={cat.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                         </div>
                         <span className="text-[11px] font-black uppercase tracking-widest text-[#102C57]/50 group-hover:text-[#102C57] transition-colors">{cat.name}</span>
                         <svg className="w-3 h-3 text-[#102C57]/20 group-hover:text-[#DAC0A3] ml-auto transition-all group-hover:translate-x-1 duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

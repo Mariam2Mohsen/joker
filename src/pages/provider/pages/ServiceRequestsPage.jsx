@@ -142,7 +142,7 @@ const ServiceRequestsPage = () => {
                           <div className="flex items-center gap-8">
                             <div className="w-16 h-16 rounded-[1.25rem] bg-[#102C57] text-[#FEFAF6] flex items-center justify-center font-black text-xs shadow-2xl relative overflow-hidden group-hover/row:scale-110 transition-transform duration-500">
                                {req.image ? (
-                                 <img src={`https://joker-hm0k.onrender.com/images/${req.image}`} alt="" className="w-full h-full object-cover" />
+                                 <img src={`https://joker-hm0k.onrender.com/images/${req.image}`} alt="" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; }} />
                                ) : req.service_name[0]}
                             </div>
                             <div>

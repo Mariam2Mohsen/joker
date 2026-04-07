@@ -35,7 +35,8 @@ const CategoryCard = ({ category }) => {
           alt={category.name}
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           onError={(e) => {
-            e.currentTarget.style.display = 'none';
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = `data:image/svg+xml,%3Csvg width='800' height='600' viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='800' height='600' fill='%23102C57'/%3E%3Crect x='300' y='200' width='200' height='200' rx='40' fill='white' opacity='0.05'/%3E%3Ctext x='400' y='310' font-family='Arial, sans-serif' font-size='22' font-weight='900' fill='white' opacity='0.15' text-anchor='middle'%3E${encodeURIComponent(category.name || 'SERVICE')}%3C/text%3E%3C/svg%3E`;
           }}
         />
 

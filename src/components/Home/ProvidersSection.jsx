@@ -28,7 +28,7 @@ const ProvidersSection = () => {
   };
 
   return (
-    <section className="bg-[#FEFAF6] py-28 relative border-y-2 border-[#EADBC8]/20">
+    <section className="bg-[#FEFAF6] py-14 md:py-28 relative border-y-2 border-[#EADBC8]/20">
       <div className="container mx-auto px-4 md:px-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20 animate-in fade-in slide-in-from-top-6 duration-700">
           <div className="max-w-2xl">
@@ -36,7 +36,7 @@ const ProvidersSection = () => {
               <span className="h-[3px] w-12 bg-[#DAC0A3]"></span>
               <span className="text-[11px] font-black uppercase tracking-[0.5em] text-[#DAC0A3]">Our Elite Network</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-6">
+            <h2 className="text-3xl md:text-6xl font-black text-[#102C57] uppercase tracking-tighter leading-none mb-4 md:mb-6">
               Meet Our <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#102C57] via-[#DAC0A3] to-[#102C57]">Skilled Experts</span>
             </h2>
             <p className="text-[#102C57]/60 font-medium text-lg leading-relaxed max-w-xl">Highly vetted professionals with proven track records of excellence, reliability, and local trust.</p>

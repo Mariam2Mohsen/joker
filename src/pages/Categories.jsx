@@ -19,7 +19,7 @@ const Categories = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-[#FEFAF6] pt-28 pb-20">
+      <div className="min-h-screen bg-[#FEFAF6] pt-16 md:pt-28 pb-20">
         <div className="container mx-auto px-4 md:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20 animate-in fade-in slide-in-from-top-6 duration-1000">
             <div className="max-w-2xl">

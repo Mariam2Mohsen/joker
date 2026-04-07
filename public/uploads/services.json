@@ -1,0 +1,755 @@
+{
+  "success": true,
+  "data": [
+    {
+      "service_id": 30,
+      "name": "Hardware Repair",
+      "category_id": 10,
+      "category_name": "IT Services",
+      "sub_category_id": 30,
+      "sub_category_name": "Hardware Repair",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "12.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510204013-it.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "750.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510204013-it.png",
+        "1775510204013-it.png"
+      ]
+    },
+    {
+      "service_id": 29,
+      "name": "Network Setup",
+      "category_id": 10,
+      "category_name": "IT Services",
+      "sub_category_id": 29,
+      "sub_category_name": "Network Setup",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "12.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510204013-it.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "500.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510204013-it.png",
+        "1775510204013-it.png"
+      ]
+    },
+    {
+      "service_id": 28,
+      "name": "Software Support",
+      "category_id": 10,
+      "category_name": "IT Services",
+      "sub_category_id": 28,
+      "sub_category_name": "Software Support",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510204013-it.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "250.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510204013-it.png",
+        "1775510204013-it.png"
+      ]
+    },
+    {
+      "service_id": 27,
+      "name": "Medicine Delivery",
+      "category_id": 9,
+      "category_name": "Health",
+      "sub_category_id": 27,
+      "sub_category_name": "Pharmacy Services",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510176985-health.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "200.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510176985-health.png",
+        "1775510176985-health.png"
+      ]
+    },
+    {
+      "service_id": 26,
+      "name": "Home Nursing",
+      "category_id": 9,
+      "category_name": "Health",
+      "sub_category_id": 26,
+      "sub_category_name": "Home Nursing",
+      "discount": "7.00",
+      "commission_type": "Fixed",
+      "commission_value": "15.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510176985-health.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "2000.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510176985-health.png",
+        "1775510176985-health.png"
+      ]
+    },
+    {
+      "service_id": 25,
+      "name": "Clinic Visit",
+      "category_id": 9,
+      "category_name": "Health",
+      "sub_category_id": 25,
+      "sub_category_name": "Clinic Visits",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510176985-health.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "500.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510176985-health.png",
+        "1775510176985-health.png"
+      ]
+    },
+    {
+      "service_id": 24,
+      "name": "Facial Skincare",
+      "category_id": 8,
+      "category_name": "Beauty",
+      "sub_category_id": 24,
+      "sub_category_name": "Skincare",
+      "discount": "3.00",
+      "commission_type": "Fixed",
+      "commission_value": "6.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510156726-beauty.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "1000.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510156726-beauty.jpeg",
+        "1775510156726-beauty.jpeg"
+      ]
+    },
+    {
+      "service_id": 23,
+      "name": "Makeup Artist",
+      "category_id": 8,
+      "category_name": "Beauty",
+      "sub_category_id": 23,
+      "sub_category_name": "Makeup",
+      "discount": "3.00",
+      "commission_type": "Fixed",
+      "commission_value": "6.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510156726-beauty.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "500.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510156726-beauty.jpeg",
+        "1775510156726-beauty.jpeg"
+      ]
+    },
+    {
+      "service_id": 22,
+      "name": "Hair Styling",
+      "category_id": 8,
+      "category_name": "Beauty",
+      "sub_category_id": 22,
+      "sub_category_name": "Hair Styling",
+      "discount": "3.00",
+      "commission_type": "Fixed",
+      "commission_value": "6.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510156726-beauty.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "140.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510156726-beauty.jpeg",
+        "1775510156726-beauty.jpeg"
+      ]
+    },
+    {
+      "service_id": 21,
+      "name": "English Tutoring",
+      "category_id": 7,
+      "category_name": "Tutoring",
+      "sub_category_id": 21,
+      "sub_category_name": "Language Tutoring",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510137541-tutoring.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "600.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510137541-tutoring.jpeg",
+        "1775510137541-tutoring.jpeg"
+      ]
+    },
+    {
+      "service_id": 20,
+      "name": "Science Tutoring",
+      "category_id": 7,
+      "category_name": "Tutoring",
+      "sub_category_id": 20,
+      "sub_category_name": "Science Tutoring",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510137541-tutoring.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "500.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510137541-tutoring.jpeg",
+        "1775510137541-tutoring.jpeg"
+      ]
+    },
+    {
+      "service_id": 19,
+      "name": "Math Tutoring",
+      "category_id": 7,
+      "category_name": "Tutoring",
+      "sub_category_id": 19,
+      "sub_category_name": "Math Tutoring",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510137541-tutoring.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "250.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510137541-tutoring.jpeg",
+        "1775510137541-tutoring.jpeg"
+      ]
+    },
+    {
+      "service_id": 18,
+      "name": "Express Delivery",
+      "category_id": 6,
+      "category_name": "Delivery",
+      "sub_category_id": 18,
+      "sub_category_name": "Express Delivery",
+      "discount": "4.00",
+      "commission_type": "Fixed",
+      "commission_value": "8.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510116879-delivery.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "300.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510116879-delivery.jpeg",
+        "1775510116879-delivery.jpeg"
+      ]
+    },
+    {
+      "service_id": 17,
+      "name": "Package Delivery",
+      "category_id": 6,
+      "category_name": "Delivery",
+      "sub_category_id": 17,
+      "sub_category_name": "Package Delivery",
+      "discount": "4.00",
+      "commission_type": "Fixed",
+      "commission_value": "8.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510116879-delivery.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "200.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510116879-delivery.jpeg",
+        "1775510116879-delivery.jpeg"
+      ]
+    },
+    {
+      "service_id": 16,
+      "name": "Food Delivery",
+      "category_id": 6,
+      "category_name": "Delivery",
+      "sub_category_id": 16,
+      "sub_category_name": "Food Delivery",
+      "discount": "4.00",
+      "commission_type": "Fixed",
+      "commission_value": "8.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510116879-delivery.jpeg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "100.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510116879-delivery.jpeg",
+        "1775510116879-delivery.jpeg"
+      ]
+    },
+    {
+      "service_id": 15,
+      "name": "Oil Change",
+      "category_id": 5,
+      "category_name": "Car Repair",
+      "sub_category_id": 15,
+      "sub_category_name": "Oil Change",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "12.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "900.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 14,
+      "name": "Brake Service",
+      "category_id": 5,
+      "category_name": "Car Repair",
+      "sub_category_id": 14,
+      "sub_category_name": "Brake Service",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "12.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "600.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 13,
+      "name": "Engine Repair",
+      "category_id": 5,
+      "category_name": "Car Repair",
+      "sub_category_id": 13,
+      "sub_category_name": "Engine Repair",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "12.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "300.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 12,
+      "name": "Car Polishing",
+      "category_id": 4,
+      "category_name": "Car Wash",
+      "sub_category_id": 12,
+      "sub_category_name": "Polishing",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "360.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 11,
+      "name": "Interior Car Cleaning",
+      "category_id": 4,
+      "category_name": "Car Wash",
+      "sub_category_id": 11,
+      "sub_category_name": "Interior Cleaning",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "240.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 10,
+      "name": "Exterior Car Wash",
+      "category_id": 4,
+      "category_name": "Car Wash",
+      "sub_category_id": 10,
+      "sub_category_name": "Exterior Wash",
+      "discount": "5.00",
+      "commission_type": "Percentage",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510079015-carwash.jpg",
+      "pricing_types": [
+        {
+          "type": "Hourly",
+          "max_price": "120.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510079015-carwash.jpg",
+        "1775510079015-carwash.jpg"
+      ]
+    },
+    {
+      "service_id": 9,
+      "name": "Lighting Installation",
+      "category_id": 3,
+      "category_name": "Electrical",
+      "sub_category_id": 9,
+      "sub_category_name": "Lighting Installation",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "13.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510050327-electrical.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "600.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510050327-electrical.jpeg",
+        "1775510050327-electrical.jpeg"
+      ]
+    },
+    {
+      "service_id": 8,
+      "name": "Appliance Repair",
+      "category_id": 3,
+      "category_name": "Electrical",
+      "sub_category_id": 8,
+      "sub_category_name": "Appliance Repair",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "13.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510050327-electrical.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "400.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510050327-electrical.jpeg",
+        "1775510050327-electrical.jpeg"
+      ]
+    },
+    {
+      "service_id": 7,
+      "name": "Electrical Wiring",
+      "category_id": 3,
+      "category_name": "Electrical",
+      "sub_category_id": 7,
+      "sub_category_name": "Wiring Services",
+      "discount": "6.00",
+      "commission_type": "Fixed",
+      "commission_value": "13.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510050327-electrical.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "200.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510050327-electrical.jpeg",
+        "1775510050327-electrical.jpeg"
+      ]
+    },
+    {
+      "service_id": 6,
+      "name": "Bathroom Installation",
+      "category_id": 2,
+      "category_name": "Plumbing",
+      "sub_category_id": 6,
+      "sub_category_name": "Bathroom Installation",
+      "discount": "8.00",
+      "commission_type": "Percentage",
+      "commission_value": "15.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510029153-Plumbing.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "450.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510029153-Plumbing.jpeg",
+        "1775510029153-Plumbing.jpeg"
+      ]
+    },
+    {
+      "service_id": 5,
+      "name": "Leak Fixing Service",
+      "category_id": 2,
+      "category_name": "Plumbing",
+      "sub_category_id": 5,
+      "sub_category_name": "Leak Fixing",
+      "discount": "8.00",
+      "commission_type": "Percentage",
+      "commission_value": "15.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510029153-Plumbing.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "300.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510029153-Plumbing.jpeg",
+        "1775510029153-Plumbing.jpeg"
+      ]
+    },
+    {
+      "service_id": 4,
+      "name": "Pipe Repair Service",
+      "category_id": 2,
+      "category_name": "Plumbing",
+      "sub_category_id": 4,
+      "sub_category_name": "Pipe Repair",
+      "discount": "8.00",
+      "commission_type": "Percentage",
+      "commission_value": "15.00",
+      "status": "Active",
+      "rate": "0.0",
+      "image": "1775510029153-Plumbing.jpeg",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "150.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775510029153-Plumbing.jpeg",
+        "1775510029153-Plumbing.jpeg"
+      ]
+    },
+    {
+      "service_id": 3,
+      "name": "Office Cleaning Service",
+      "category_id": 1,
+      "category_name": "Cleaning",
+      "sub_category_id": 3,
+      "sub_category_name": "Office Cleaning",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "4.8",
+      "image": "1775509998749-Cleaning.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "200.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775509998749-Cleaning.png",
+        "1775509998749-Cleaning.png"
+      ]
+    },
+    {
+      "service_id": 2,
+      "name": "Deep Home Cleaning",
+      "category_id": 1,
+      "category_name": "Cleaning",
+      "sub_category_id": 2,
+      "sub_category_name": "Deep Cleaning",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "4.5",
+      "image": "1775509998749-Cleaning.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "150.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775509998749-Cleaning.png",
+        "1775509998749-Cleaning.png"
+      ]
+    },
+    {
+      "service_id": 1,
+      "name": "Basic Home Cleaning",
+      "category_id": 1,
+      "category_name": "Cleaning",
+      "sub_category_id": 1,
+      "sub_category_name": "Home Cleaning",
+      "discount": "5.00",
+      "commission_type": "Fixed",
+      "commission_value": "10.00",
+      "status": "Active",
+      "rate": "4.3",
+      "image": "1775509998749-Cleaning.png",
+      "pricing_types": [
+        {
+          "type": "Fixed",
+          "max_price": "100.00",
+          "enabled": 1
+        }
+      ],
+      "gallery": [
+        "1775509998749-Cleaning.png",
+        "1775509998749-Cleaning.png"
+      ]
+    }
+  ]
+}

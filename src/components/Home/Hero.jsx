@@ -29,7 +29,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[500px] md:min-h-[600px] flex items-center px-4 md:px-10 overflow-hidden">
+    <section className="relative min-h-[420px] md:min-h-[600px] flex items-center px-4 md:px-10 overflow-hidden">
       {/* Slideshow background */}
       {HERO_SLIDES.map((slide, index) => (
         <div
@@ -48,37 +48,36 @@ const Hero = () => {
         </div>
       ))}
 
-      <div className="relative z-10 max-w-3xl mt-12 md:mt-0 text-[#FEFAF6]">
-        <div className="overflow-hidden mb-6">
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] animate-in slide-in-from-bottom-12 duration-1000">
+      <div className="relative z-10 max-w-3xl mt-8 md:mt-0 text-[#FEFAF6]">
+        <div className="overflow-hidden mb-4 md:mb-6">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] animate-in slide-in-from-bottom-12 duration-1000">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FEFAF6] to-[#DAC0A3]">
               {HERO_SLIDES[currentSlide].title}
             </span>
           </h1>
         </div>
 
-        <p className="mb-10 text-xl font-medium max-w-xl leading-relaxed text-[#FEFAF6]/90 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
+        <p className="mb-6 md:mb-10 text-base md:text-xl font-medium max-w-xl leading-relaxed text-[#FEFAF6]/90 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-200">
           {HERO_SLIDES[currentSlide].description}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
           <button
             type="button"
-            className="bg-[#DAC0A3] text-[#102C57] px-12 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-[#FEFAF6] hover:shadow-[0_25px_60px_rgba(218,192,163,0.4)] transition-all duration-500 transform active:scale-95 group flex items-center gap-3"
+            className="bg-[#DAC0A3] text-[#102C57] px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] hover:bg-[#FEFAF6] hover:shadow-[0_25px_60px_rgba(218,192,163,0.4)] transition-all duration-500 transform active:scale-95 group flex items-center gap-3 w-fit"
           >
             <span>Book Now</span>
             <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
-      
         </div>
-        <div className="flex gap-4 mt-20">
+        <div className="flex gap-4 mt-10 md:mt-20">
           {HERO_SLIDES.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrentSlide(i)}
-              className={`h-2 rounded-full transition-all duration-700 ${i === currentSlide ? 'w-16 bg-[#DAC0A3] shadow-[0_0_20px_rgba(218,192,163,0.6)]' : 'w-6 bg-white/30 hover:bg-white/50'
+              className={`h-2 rounded-full transition-all duration-700 ${i === currentSlide ? 'w-10 md:w-16 bg-[#DAC0A3] shadow-[0_0_20px_rgba(218,192,163,0.6)]' : 'w-4 md:w-6 bg-white/30 hover:bg-white/50'
                 }`}
               aria-label={`Go to slide ${i + 1}`}
             />
