@@ -4,6 +4,7 @@ import TopHeader from "../components/TopHeader";
 import Sidebar from "../components/Sidebar";
 import { ClipboardList, Filter, Search, Calendar, DollarSign, CheckCircle2, XCircle, Clock, ArrowUpRight, ShieldAlert, Zap, Layers, Trash2, RotateCcw } from 'lucide-react';
 import toast from "react-hot-toast";
+import ZeroState from "../../../components/UI/ZeroState";
 
 const ServiceRequestsPage = () => {
   const [requests, setRequests] = useState([]);
@@ -126,14 +127,13 @@ const ServiceRequestsPage = () => {
                       ))
                     ) : filteredRequests.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="px-12 py-48 text-center bg-white">
-                          <div className="flex flex-col items-center gap-8 group/empty">
-                            <div className="w-28 h-28 rounded-[3.5rem] bg-[#FEFAF6] border-2 border-[#DAC0A3]/20 flex items-center justify-center text-[#DAC0A3]/40 group-hover/empty:scale-110 group-hover/empty:rotate-12 transition-all duration-700 shadow-inner">
-                               <Layers size={48} strokeWidth={1} />
-                            </div>
-                            <p className="text-[14px] font-black uppercase text-[#102C57]/40 tracking-[0.4em] group-hover/empty:tracking-[0.6em] transition-all duration-1000">No Intelligence Logged</p>
-                            <p className="text-[9px] font-black uppercase text-[#DAC0A3] tracking-widest leading-none opacity-60">Initialize new operational node to begin logging.</p>
-                          </div>
+                        <td colSpan="5">
+                          <ZeroState 
+                            title="No Requests Logged" 
+                            message="We couldn't find any service requests in your queue. Once customers book your services, they will appear here for synchronization."
+                            actionLabel="Back to Home"
+                            onAction={() => window.location.href='/provider/home'}
+                          />
                         </td>
                       </tr>
                     ) : filteredRequests.map((req) => (

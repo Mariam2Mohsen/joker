@@ -121,7 +121,22 @@ const handleChange = (e) => {
   const { name, value } = e.target;
   let finalValue = value;
 
- 
+  if (name === 'firstName') {
+    setErrors(prev => ({ ...prev, firstName: !value.trim() ? "First name is required" : null }));
+  }
+  
+  if (name === 'lastName') {
+    setErrors(prev => ({ ...prev, lastName: !value.trim() ? "Last name is required" : null }));
+  }
+  
+  if (name === 'email') {
+    let emailErr = null;
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    if (!value.trim()) emailErr = "Email is required";
+    else if (!isEmailValid) emailErr = "Invalid email format";
+    setErrors(prev => ({ ...prev, email: emailErr }));
+  }
+
   if (name === 'phone') {
     const onlyNums = value.replace(/\D/g, '');
     if (onlyNums.length <= 11) {
@@ -161,6 +176,27 @@ const handleChange = (e) => {
     }
   }
 
+  if (name === 'price') {
+    if (parseFloat(value) > 105) {
+      // Do not overwrite, just give him error immediately
+      setErrors(prev => ({ ...prev, price: "Maximum price is 105 LE" }));
+    } else if (parseFloat(value) < 0) {
+      finalValue = '0';
+    } else {
+      setErrors(prev => ({ ...prev, price: "" }));
+    }
+  }
+
+  if (name === 'description') {
+    if (value.length > 50) {
+      setErrors(prev => ({ ...prev, description: "Description can only be 50 characters max" }));
+    } else if (!value.trim()) {
+      setErrors(prev => ({ ...prev, description: "Service Description is required" }));
+    } else {
+      setErrors(prev => ({ ...prev, description: "" }));
+    }
+  }
+
   setFormData((prev) => ({ ...prev, [name]: finalValue }));
   
 };
@@ -185,7 +221,13 @@ const handleChange = (e) => {
     if (!formData.phone) newErrors.phone = "Phone number is required";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    if (Object.keys(newErrors).length > 0) {
+      const errorMessages = Object.values(newErrors).join(" • ");
+      notifyError(`Please fix the following: ${errorMessages}`);
+      return false;
+    }
+    return true;
   };
 
   const handleFileChange = (e) => {
@@ -231,12 +273,20 @@ const handleChange = (e) => {
   const handleSignUp = async (isSkipping = false) => {
     if (!validateStep1()) return;
 
-    if (
-      !isSkipping &&
-      (!formData.category || !formData.subCategory || !formData.service)
-    ) {
-      notifyError("Please select a category, sub-category, and service.");
-      return;
+    if (!isSkipping) {
+      const step2Errs = [];
+      if (!formData.category) step2Errs.push("Category is required");
+      if (!formData.subCategory) step2Errs.push("Sub-category is required");
+      if (!formData.service) step2Errs.push("Service is required");
+      if (!formData.price && formData.priceType !== "Free") step2Errs.push("Price is required");
+      else if (parseFloat(formData.price) > 105) step2Errs.push("Maximum price is 105");
+      if (!formData.description) step2Errs.push("Service Description is required");
+      else if (formData.description.length > 50) step2Errs.push("Description can only be 50 characters max");
+
+      if (step2Errs.length > 0) {
+        notifyError(`Please complete Step 2: ${step2Errs.join(" • ")}`);
+        return;
+      }
     }
 
     setIsLoading(true);
@@ -348,9 +398,23 @@ const handleChange = (e) => {
       }
     } catch (err) {
       console.error(err.response?.data || err.message);
-      notifyError(
-        err.response?.data?.message || "Registration failed. Please try again.",
-      );
+      
+      if (err.response?.data?.errors) {
+        let backendErrors = "";
+        const dataErrors = err.response.data.errors;
+        if (Array.isArray(dataErrors)) {
+          backendErrors = dataErrors.map(e => e.msg || e).join(" • ");
+        } else if (typeof dataErrors === 'object') {
+          backendErrors = Object.values(dataErrors).join(" • ");
+        } else {
+          backendErrors = String(dataErrors);
+        }
+        notifyError(`Registration failed: ${backendErrors}`);
+      } else {
+        notifyError(
+          err.response?.data?.message || "Registration failed. Please try again.",
+        );
+      }
     } finally {
       setIsLoading(false);
     }
@@ -434,6 +498,7 @@ const handleChange = (e) => {
                     value={formData.email}
                     onChange={handleChange}
                     error={errors.email}
+                    valid={formData.email && !errors.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)}
                     placeholder="Email Address"
                   />
                 </div>
@@ -667,7 +732,7 @@ const handleChange = (e) => {
                     </div>
                   </div>
                   <div className="space-y-2 flex flex-col">
-                    <label className="text-[10px] font-black tracking-widest text-[#102C57] uppercase">
+                    <label className={`text-[10px] font-black tracking-widest uppercase transition-colors duration-300 ${errors.price ? 'text-red-500' : 'text-[#102C57]'}`}>
                       PRICE <span className="text-red-500 text-sm">*</span>
                     </label>
                     <div className="flex gap-2 relative">
@@ -678,7 +743,10 @@ const handleChange = (e) => {
                         placeholder="E.g. 50"
                         type="number"
                         step="0.01"
-                        className="flex-1 w-full h-12 px-4 bg-white border border-[#EADBC8] rounded-xl outline-none text-[#102C57] text-sm font-medium focus:border-[#102C57] transition-all placeholder:text-[#102C57]/30"
+                        className={`flex-1 w-full h-12 px-4 bg-white border-2 rounded-xl outline-none text-[#102C57] text-sm font-medium transition-all duration-300 placeholder:text-[#102C57]/30
+                          ${errors.price 
+                            ? 'border-red-400 bg-red-50/10 focus:border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.1)]' 
+                            : 'border-[#EADBC8] focus:border-[#102C57]'}`}
                       />
                       <div className="relative w-[120px] shrink-0">
                         <select
@@ -710,19 +778,30 @@ const handleChange = (e) => {
                         </div>
                       </div>
                     </div>
+                    {errors.price && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-2 uppercase tracking-wide animate-in fade-in slide-in-from-top-1">
+                        {errors.price}
+                      </p>
+                    )}
                   </div>
 
                   <div className="md:col-span-2 space-y-2 flex flex-col">
                     <label className="text-[10px] font-black tracking-widest text-[#102C57] uppercase">
                       Service Description <span className="text-red-500 text-sm">*</span>
+                      <span className="text-[#102C57]/40 float-right lowercase tracking-normal font-medium">{formData.description.length}/50</span>
                     </label>
-                    <textarea
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      placeholder="Provide a detailed description of your services, expertise, and what customers can expect..."
-                      className="w-full min-h-[150px] p-6 bg-[#FEFAF6] border-2 border-[#EADBC8]/30 rounded-[2rem] outline-none text-[#102C57] text-sm font-medium focus:border-[#102C57] focus:ring-8 focus:ring-[#102C57]/5 transition-all resize-none shadow-inner placeholder:text-[#102C57]/20"
-                    ></textarea>
+                    <div>
+                      <textarea
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        placeholder="Provide a short description (max 50 chars)..."
+                        className={`w-full min-h-[150px] p-6 bg-[#FEFAF6] border-2 ${errors.description ? 'border-red-500' : 'border-[#EADBC8]/30'} rounded-[2rem] outline-none text-[#102C57] text-sm font-medium focus:border-[#102C57] focus:ring-8 focus:ring-[#102C57]/5 transition-all resize-none shadow-inner placeholder:text-[#102C57]/20`}
+                      ></textarea>
+                      {errors.description && (
+                        <p className="text-red-500 text-xs font-bold mt-2 ml-4">{errors.description}</p>
+                      )}
+                    </div>
                   </div>
 
                   <div className="md:col-span-2 space-y-6 pt-4">

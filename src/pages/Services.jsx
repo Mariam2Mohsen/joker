@@ -6,6 +6,7 @@ import { ServiceSkeleton } from '../components/UI/Skeleton';
 import ServiceCard from '../components/Services/ServiceCard';
 import { useCategories, useCategoryBySlug } from '../hooks/useCategories';
 import { useServices } from '../hooks/useServices';
+import ZeroState from '../components/UI/ZeroState';
 
 /* ── Reusable styled select ── */
 const FilterSelect = ({ label, name, value, onChange, disabled, children }) => (
@@ -256,10 +257,12 @@ const Services = () => {
                       )}
                     </h1>
                     <p className="text-white/55 font-medium text-base max-w-lg leading-relaxed">
-                      {filters.subCategory !== 'all'
-                        ? category?.subCategories?.find(s => String(s.id) === String(filters.subCategory))?.description || category?.description
-                        : category?.description || 'Explore our wide range of professional services, delivered by verified experts directly to your doorstep.'
-                      }
+                      {(() => {
+                        const rawDesc = filters.subCategory !== 'all'
+                          ? category?.subCategories?.find(s => String(s.id) === String(filters.subCategory))?.description || category?.description
+                          : category?.description || 'Explore our wide range of professional services, delivered by verified experts directly to your doorstep.';
+                        return rawDesc.length > 60 ? rawDesc.slice(0, 60).trimEnd() + '...' : rawDesc;
+                      })()}
                     </p>
                   </>
                 )}
@@ -528,26 +531,15 @@ const Services = () => {
                       );
                     })
                   ) : (
-                    <div className="col-span-full py-24 text-center bg-white rounded-[2.5rem] border-2 border-dashed border-[#EADBC8] animate-in zoom-in duration-500 shadow-sm">
-                      <div className="w-16 h-16 bg-[#102C57]/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#EADBC8]">
-                        <svg className="w-8 h-8 text-[#102C57]/25" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                        </svg>
-                      </div>
-                      <h3 className="text-xl font-black text-[#102C57] uppercase tracking-widest mb-3">No Services Found</h3>
-                      <p className="text-[#102C57]/40 text-xs uppercase tracking-wider max-w-sm mx-auto leading-relaxed mb-8">
-                        {hasActiveFilters
-                          ? "Try adjusting your filters to find what you're looking for."
-                          : "We're expanding our team. Check back soon!"}
-                      </p>
-                      {hasActiveFilters && (
-                        <button
-                          onClick={clearFilters}
-                          className="px-8 py-3 rounded-2xl border-2 border-[#DAC0A3] text-[#102C57] text-[11px] font-black uppercase tracking-widest hover:bg-[#102C57] hover:text-white hover:border-[#102C57] transition-all"
-                        >
-                          Reset Filters
-                        </button>
-                      )}
+                    <div className="col-span-full">
+                      <ZeroState 
+                        title="No Services Found" 
+                        message={hasActiveFilters 
+                          ? "We couldn't find any services matching your current filters. Try adjusting your preferences or clearing all filters." 
+                          : "We're currently expanding our network of experts. Check back soon for new services!"}
+                        actionLabel={hasActiveFilters ? "Clear All Filters" : "Browse Categories"}
+                        onAction={hasActiveFilters ? clearFilters : () => window.location.href='/services'}
+                      />
                     </div>
                   )}
                 </div>

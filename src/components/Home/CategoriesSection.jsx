@@ -4,6 +4,7 @@ import CategoryCard from '../Categories/CategoryCard';
 import { CategoryCardSkeleton } from '../UI/Skeleton';
 import { useTopCategories } from '../../hooks/useCategories';
 import logoImg from '../../assets/cta-logo.png';
+import ZeroState from '../UI/ZeroState';
 
 const CategoriesSection = () => {
   const { categories, isLoading } = useTopCategories(6);
@@ -48,7 +49,7 @@ const CategoriesSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
           {isLoading
             ? [1, 2, 3, 4, 5, 6].map(i => <CategoryCardSkeleton key={i} />)
-            : categories.map((category, index) => (
+            : categories.length > 0 ? categories.map((category, index) => (
                 <div
                   key={category.id}
                   className="animate-in fade-in slide-in-from-bottom-8 duration-700 h-full"
@@ -56,7 +57,16 @@ const CategoriesSection = () => {
                 >
                   <CategoryCard category={category} />
                 </div>
-              ))
+              )) : (
+                <div className="col-span-full">
+                  <ZeroState 
+                    title="No Categories Available" 
+                    message="Our service intelligence hub is currently being recalibrated. Please check back shortly for our full selection."
+                    actionLabel="Contact Support"
+                    onAction={() => window.location.href='/contact'}
+                  />
+                </div>
+              )
           }
         </div>
         

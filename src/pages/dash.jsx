@@ -13,6 +13,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import TopHeader from "./provider/components/TopHeader";
 import CustomerSidebar from "./customer/components/Sidebar";
+import ZeroState from "../components/UI/ZeroState";
 
 const PremiumStatCard = ({ title, value, icon, trend, color, onClick }) => (
   <div 
@@ -152,28 +153,41 @@ const CustomerDashboard = () => {
                        { id: 1, service: 'Royal Villa Cleaning Protocol', provider: 'Hoon Integrated Services', time: 'Pending Sync', price: '450.00 L.E', type: 'ACTIVE' },
                        { id: 2, service: 'Expert Class AC Restoration', provider: 'Global Cooling Node', time: 'Completed', price: '1,200.00 L.E', type: 'RESOLVED' },
                        { id: 3, service: 'Elite Security Deployment', provider: 'Petra Defensive Unit', time: 'In Progress', price: '3,500.00 L.E', type: 'ACTIVE' },
-                     ].map((order) => (
-                       <div key={order.id} className="flex flex-col md:flex-row items-center gap-8 group/item px-8 py-7 hover:bg-[#FEFAF6] rounded-[3.5rem] transition-all duration-700 border border-transparent hover:border-[#EADBC8]/40 cursor-pointer active:scale-[0.98]">
-                         <div className={`w-18 h-18 rounded-[1.75rem] bg-[#102C57] text-[#FEFAF6] flex items-center justify-center shadow-2xl transform group-hover/item:rotate-[10deg] group-hover/item:scale-110 transition-all duration-700 font-extrabold text-xl`}>
-                           {order.service[0]}
-                         </div>
-                         <div className="flex-1 text-left">
-                           <div className="flex items-center gap-3 mb-1.5">
-                              <span className="text-[9px] font-black uppercase text-[#DAC0A3] tracking-[0.3em] group-hover/item:text-[#102C57] transition-colors">{order.type} Protocol</span>
-                              <div className="w-1 h-1 bg-[#EADBC8] rounded-full text-left"></div>
-                              <span className="text-[9px] font-black uppercase text-[#DAC0A3] tracking-widest">{order.time}</span>
+                     ].length > 0 ? (
+                       [
+                         { id: 1, service: 'Royal Villa Cleaning Protocol', provider: 'Hoon Integrated Services', time: 'Pending Sync', price: '450.00 L.E', type: 'ACTIVE' },
+                         { id: 2, service: 'Expert Class AC Restoration', provider: 'Global Cooling Node', time: 'Completed', price: '1,200.00 L.E', type: 'RESOLVED' },
+                         { id: 3, service: 'Elite Security Deployment', provider: 'Petra Defensive Unit', time: 'In Progress', price: '3,500.00 L.E', type: 'ACTIVE' },
+                       ].map((order) => (
+                         <div key={order.id} className="flex flex-col md:flex-row items-center gap-8 group/item px-8 py-7 hover:bg-[#FEFAF6] rounded-[3.5rem] transition-all duration-700 border border-transparent hover:border-[#EADBC8]/40 cursor-pointer active:scale-[0.98]">
+                           <div className={`w-18 h-18 rounded-[1.75rem] bg-[#102C57] text-[#FEFAF6] flex items-center justify-center shadow-2xl transform group-hover/item:rotate-[10deg] group-hover/item:scale-110 transition-all duration-700 font-extrabold text-xl`}>
+                             {order.service[0]}
                            </div>
-                           <h4 className="text-lg font-black text-[#102C57] group-hover/item:translate-x-2 transition-transform duration-500 opacity-90">{order.service}</h4>
-                           <p className="text-[10px] font-black uppercase text-[#DAC0A3] tracking-[0.2em] mt-1 italic">Operator: {order.provider}</p>
-                         </div>
-                         <div className="text-right w-full md:w-auto">
-                           <p className="text-md font-black text-[#102C57] mb-2">{order.price}</p>
-                           <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#DAC0A3]/40 group-hover/item:text-[#102C57] group-hover/item:bg-[#FEFAF6] transition-all shadow-sm ml-auto">
-                              <ArrowUpRight size={18} className="group-hover/item:scale-125 transition-transform" />
+                           <div className="flex-1 text-left">
+                             <div className="flex items-center gap-3 mb-1.5">
+                               <span className="text-[9px] font-black uppercase text-[#DAC0A3] tracking-[0.3em] group-hover/item:text-[#102C57] transition-colors">{order.type} Protocol</span>
+                               <div className="w-1 h-1 bg-[#EADBC8] rounded-full text-left"></div>
+                               <span className="text-[9px] font-black uppercase text-[#DAC0A3] tracking-widest">{order.time}</span>
+                             </div>
+                             <h4 className="text-lg font-black text-[#102C57] group-hover/item:translate-x-2 transition-transform duration-500 opacity-90">{order.service}</h4>
+                             <p className="text-[10px] font-black uppercase text-[#DAC0A3] tracking-[0.2em] mt-1 italic">Operator: {order.provider}</p>
+                           </div>
+                           <div className="text-right w-full md:w-auto">
+                             <p className="text-md font-black text-[#102C57] mb-2">{order.price}</p>
+                             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#DAC0A3]/40 group-hover/item:text-[#102C57] group-hover/item:bg-[#FEFAF6] transition-all shadow-sm ml-auto">
+                               <ArrowUpRight size={18} className="group-hover/item:scale-125 transition-transform" />
+                             </div>
                            </div>
                          </div>
-                       </div>
-                     ))}
+                       ))
+                     ) : (
+                       <ZeroState 
+                         title="No Operations Found" 
+                         message="Your operational log is currently empty. Start exploring services and book your first expert to see them show up here."
+                         actionLabel="Explore Services"
+                         onAction={() => navigate('/services')}
+                       />
+                     )}
                   </div>
                </div>
 

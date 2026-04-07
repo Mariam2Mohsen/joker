@@ -7,19 +7,37 @@ const BASE_URL = 'https://joker-hm0k.onrender.com/api';
 
 const ZERO_STATE_SVG = `data:image/svg+xml,%3Csvg width='800' height='600' viewBox='0 0 800 600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='800' height='600' fill='%23FEFAF6'/%3E%3Cpath d='M0 0l800 600M800 0L0 600' stroke='%23EADBC8' stroke-width='2' opacity='0.3'/%3E%3Crect x='300' y='200' width='200' height='200' rx='40' fill='%23102C57' opacity='0.05'/%3E%3Ctext x='400' y='310' font-family='Arial, sans-serif' font-size='24' font-weight='900' fill='%23102C57' opacity='0.2' text-anchor='middle' text-transform='uppercase' letter-spacing='4'%3ENO IMAGE%3C/text%3E%3C/svg%3E`;
 
+const IMAGE_PATH_MAP = {
+    '1775509998749-Cleaning.png': '/uploads/services/',
+    '1775510029153-Plumbing.jpeg': '/uploads/services/',
+    '1775510050327-electrical.jpeg': '/uploads/services/',
+    '1775510116879-delivery.jpeg': '/uploads/gallery/',
+    '1775510137541-tutoring.jpeg': '/uploads/gallery/',
+    '1775504987877-provider.jpeg': '/uploads/services/',
+};
+
 const getServiceImage = (existingImage) => {
     if (!existingImage || String(existingImage).trim() === '') return ZERO_STATE_SVG;
 
     const img = String(existingImage).trim();
+    const publicUrl = process.env.PUBLIC_URL || '';
 
-    // Already a full URL
-    if (img.startsWith('http://') || img.startsWith('https://')) return img;
+    // Already a local absolute path
+    if (img.startsWith('/uploads/')) return `${publicUrl}${img}`;
 
-    // Server-relative path
-    if (img.startsWith('/')) return `https://joker-hm0k.onrender.com${img}`;
+    // Extract filename if it's a path or URL
+    const filename = img.split('/').pop();
 
-    // Filename or relative path with extension
-    if (img.includes('.')) return `/uploads/${img}`;
+    // If it's a full external URL (not our backend), return as is
+    if (img.startsWith('http') && !img.includes('joker-hm0k.onrender.com')) {
+        return img;
+    }
+
+    if (filename && filename.includes('.')) {
+        // Use mapping if available, otherwise default to uploads root
+        const path = IMAGE_PATH_MAP[filename] || '/uploads/';
+        return `${publicUrl}${path}${filename}`;
+    }
 
     return ZERO_STATE_SVG;
 };
@@ -38,9 +56,10 @@ const resolveGalleryImage = (entry) => {
  */
 export const fetchAllServices = async () => {
     try {
-        const response = await axios.get(`/uploads/services.json?v=${new Date().getTime()}`);
+        const publicUrl = process.env.PUBLIC_URL || '';
+        const response = await axios.get(`${publicUrl}/uploads/services.json?v=${new Date().getTime()}`);
         const data = response.data.data || [];
-        
+
         let activeProviders = [];
         try {
             activeProviders = await fetchAllProviders();
@@ -50,7 +69,7 @@ export const fetchAllServices = async () => {
 
         // Map backend data to frontend ServiceCard expectations
         return data.map(service => {
-            let price = service.discount ? (100 - service.discount) : 50; 
+            let price = service.discount ? (100 - service.discount) : 50;
             let unit = 'EGP';
             if (service.pricing_types && service.pricing_types.length > 0) {
                 const pricing = service.pricing_types[0];
@@ -59,7 +78,7 @@ export const fetchAllServices = async () => {
                 else if (pricing.type === 'Fixed') unit = 'EGP';
                 else if (pricing.type === 'Negotiable') unit = 'EGP (est)';
             }
-            
+
             const providerData = activeProviders.length > 0 ? activeProviders[service.service_id % activeProviders.length] : null;
             const providerName = providerData ? providerData.name : 'Verified Expert';
             const providerAvatar = providerData ? providerData.avatar : null;
@@ -75,7 +94,7 @@ export const fetchAllServices = async () => {
             return {
                 id: String(service.service_id),
                 name: service.name,
-                description: service.description || '', 
+                description: service.description || '',
                 categoryId: String(service.category_id),
                 categoryName: service.category_name,
                 subCategoryId: String(service.sub_category_id),
@@ -85,7 +104,7 @@ export const fetchAllServices = async () => {
                 rating: (service.rate && service.rate > 0) ? parseFloat(service.rate) : 4.8,
                 image: getServiceImage(service.image),
                 availability: availabilityKey,
-                provider: providerName, 
+                provider: providerName,
                 providerAvatar,
                 distance: parseFloat((Math.random() * 5 + 1).toFixed(1)),
                 completedJobs: Math.floor(Math.random() * 100) + 10,
@@ -103,21 +122,22 @@ export const fetchAllServices = async () => {
  */
 export const fetchServiceById = async (id) => {
     try {
-        const response = await axios.get(`/uploads/services.json?v=${new Date().getTime()}`);
+        const publicUrl = process.env.PUBLIC_URL || '';
+        const response = await axios.get(`${publicUrl}/uploads/services.json?v=${new Date().getTime()}`);
         const data = response.data.data || [];
         const service = data.find(s => String(s.service_id) === String(id)) || data.find(s => String(s.id) === String(id));
         if (!service) return null;
-        
+
         let activeProviders = [];
         try {
             activeProviders = await fetchAllProviders();
-        } catch(e) {}
+        } catch (e) { }
 
         const providerData = activeProviders.length > 0 ? activeProviders[service.service_id % activeProviders.length] : null;
         const providerName = providerData ? providerData.name : 'Verified Expert';
         const providerAvatar = providerData ? providerData.avatar : null;
 
-        let price = service.discount ? (100 - service.discount) : 50; 
+        let price = service.discount ? (100 - service.discount) : 50;
         let unit = 'EGP';
         if (service.pricing_types && service.pricing_types.length > 0) {
             const pricing = service.pricing_types[0];
@@ -125,7 +145,7 @@ export const fetchServiceById = async (id) => {
             if (pricing.type === 'Hourly') unit = 'EGP/hr';
             else if (pricing.type === 'Fixed') unit = 'EGP';
         }
-        
+
         const statusLower = (service.status || '').toLowerCase();
         let availabilityKey = 'not_available';
         if (statusLower === 'active' || statusLower === 'available') {
@@ -148,7 +168,7 @@ export const fetchServiceById = async (id) => {
             image: getServiceImage(service.image),
             gallery: (service.gallery || service.service_images || []).map(entry => resolveGalleryImage(entry)),
             availability: availabilityKey,
-            provider: providerName, 
+            provider: providerName,
             providerAvatar,
             distance: 2.5,
             completedJobs: 45,

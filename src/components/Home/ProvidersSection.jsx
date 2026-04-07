@@ -5,6 +5,7 @@ import Button from '../UI/Button';
 import StarRating from '../UI/StarRating';
 import ProviderDetailsModal from '../UI/ProviderDetailsModal';
 import { useProviders } from '../../hooks/useProviders';
+import ZeroState from '../UI/ZeroState';
 const ProvidersSection = () => {
   const scrollRef = useRef(null);
   const { providers, isLoading } = useProviders();
@@ -73,7 +74,7 @@ const ProvidersSection = () => {
         >
           {isLoading ? (
             <div className="w-full text-center py-10 text-[#102C57]">Loading providers...</div>
-          ) : providers.map((provider, index) => (
+          ) : providers.length > 0 ? providers.map((provider, index) => (
             <div key={provider.id} className="flex-shrink-0 w-[340px] animate-in fade-in slide-in-from-bottom-10 duration-700" style={{ animationDelay: `${index * 150}ms` }}>
               <Card padding="p-0" className="flex flex-col h-full group perspective-1000 border-[3px] border-white hover:border-[#DAC0A3] transition-all duration-500 rounded-[3rem] shadow-xl hover:shadow-2xl">
                 <div className="relative p-12 flex flex-col items-center">
@@ -114,7 +115,16 @@ onClick={() => handleViewProfile(provider.Users_id || provider.id)}
                 </div>
               </Card>
             </div>
-          ))}
+          )) : (
+            <div className="w-full">
+              <ZeroState 
+                title="No Skilled Experts Yet" 
+                message="Our elite network is growing. Professional providers will soon be available in your area for luxury-tier service."
+                actionLabel="Become a Provider"
+                onAction={() => window.location.href='/signup-provider'}
+              />
+            </div>
+          ) }
         </div>
       </div>
 

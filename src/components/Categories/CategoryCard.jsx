@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /* ── helpers ── */
-const MAX_DESC_CHARS = 120;
+const MAX_DESC_CHARS = 25;
 
 const truncate = (text, max) => {
   if (!text) return '';
@@ -117,30 +117,38 @@ const CategoryCard = ({ category }) => {
         </p>
 
         {/* Subcategory pills — max 3, each name capped at 18 chars */}
-        {category.subCategories && category.subCategories.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {category.subCategories.slice(0, 3).map((sub) => (
-              <span
-                key={sub.id}
-                className="text-[10px] font-bold uppercase tracking-widest
-                           bg-[#102C57]/5 text-[#102C57]/60 px-3 py-1 rounded-lg
-                           border border-[#102C57]/5
-                           transition-all duration-300
-                           group-hover:bg-[#102C57] group-hover:text-white
-                           group-hover:border-transparent
-                           max-w-[110px] truncate"
-                title={sub.name}
-              >
-                {truncate(sub.name, 18)}
-              </span>
-            ))}
-            {category.subCategories.length > 3 && (
-              <span className="text-[10px] font-bold text-[#102C57]/30 self-center">
-                +{category.subCategories.length - 3}
-              </span>
-            )}
-          </div>
-        )}
+        {/* Subcategory pills — max 3, each name capped at 18 chars */}
+        <div className={`flex flex-wrap gap-2.5 mb-5 min-h-[28px] ${category.subCategories?.length < 3 ? 'justify-start' : 'justify-start'}`}>
+          {category.subCategories && category.subCategories.length > 0 ? (
+            <>
+              {category.subCategories.slice(0, 3).map((sub) => (
+                <span
+                  key={sub.id}
+                  className={`text-[10px] font-bold uppercase tracking-widest
+                             bg-[#102C57]/5 text-[#102C57]/60 px-4 py-1.5 rounded-lg
+                             border border-[#102C57]/10
+                             transition-all duration-300
+                             group-hover:bg-[#102C57] group-hover:text-white
+                             group-hover:border-transparent group-hover:shadow-md
+                             truncate
+                             ${category.subCategories.length < 3 ? 'flex-grow text-center max-w-none' : 'max-w-[110px]'}`}
+                  title={sub.name}
+                >
+                  {truncate(sub.name, 18)}
+                </span>
+              ))}
+              {category.subCategories.length > 3 && (
+                <span className="text-[10px] font-bold text-[#102C57]/30 self-center ml-1">
+                  +{category.subCategories.length - 3}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#102C57]/30 px-3 py-1 rounded-lg border border-dashed border-[#102C57]/20 flex-grow text-center">
+              General Services
+            </span>
+          )}
+        </div>
 
         {/* Spacer pushes CTA to bottom */}
         <div className="flex-1" />

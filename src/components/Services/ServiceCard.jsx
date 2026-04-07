@@ -24,9 +24,7 @@ const ServiceCard = ({
       padding="p-0"
       className={`flex flex-col h-full group overflow-hidden border border-[#EADBC8]/40 hover:border-[#102C57]/30 transition-all duration-500 shadow-lg hover:shadow-2xl rounded-3xl bg-white ${className}`}
     >
-      {/* ══════════════════════════════
-          IMAGE  (compact 16:9-ish)
-      ══════════════════════════════ */}
+
       <div className="relative aspect-video overflow-hidden rounded-t-3xl flex-shrink-0 bg-[#FEFAF6]">
         <img
           src={service.image}
@@ -89,11 +87,11 @@ const ServiceCard = ({
           {/* Avatar placeholder */}
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#102C57] to-[#1a3f7a] flex items-center justify-center flex-shrink-0 shadow-md">
             {service.providerAvatar ? (
-               <img src={service.providerAvatar} alt={service.provider} className="w-full h-full rounded-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.innerHTML = `<span class="text-white text-[11px] font-black uppercase leading-none">${(service.provider || '?')[0]}</span>`; }} />
+              <img src={service.providerAvatar} alt={service.provider} className="w-full h-full rounded-full object-cover" onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.style.display = 'none'; e.currentTarget.parentElement.innerHTML = `<span class="text-white text-[11px] font-black uppercase leading-none">${(service.provider || '?')[0]}</span>`; }} />
             ) : (
-               <span className="text-white text-[11px] font-black uppercase leading-none">
-                 {(service.provider || '?')[0]}
-               </span>
+              <span className="text-white text-[11px] font-black uppercase leading-none">
+                {(service.provider || '?')[0]}
+              </span>
             )}
           </div>
           <div className="min-w-0">
@@ -140,7 +138,7 @@ const ServiceCard = ({
           >
             Details
           </Link>
-          <Link to="/booking" className="flex-1">
+          <Link to="" className="flex-1">
             <button className="w-full bg-[#102C57] text-white py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-[#DAC0A3] hover:text-[#102C57] transition-all duration-300 shadow-md hover:shadow-xl">
               Book Now
             </button>

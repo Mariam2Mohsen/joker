@@ -5,6 +5,7 @@ import ServiceCard from '../Services/ServiceCard';
 import { ServiceSkeleton } from '../UI/Skeleton';
 import { useCategories } from '../../hooks/useCategories';
 import { useServices } from '../../hooks/useServices';
+import ZeroState from '../UI/ZeroState';
 
 const ServicesSection = () => {
   const { categories, isLoading: catsLoading } = useCategories();
@@ -72,7 +73,7 @@ const ServicesSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {isLoading
             ? Array(4).fill(0).map((_, i) => <ServiceSkeleton key={i} />)
-            : (apiServices || []).slice(0, 4).map((service, index) => {
+            : (apiServices || []).length > 0 ? (apiServices || []).slice(0, 4).map((service, index) => {
               const names = getNames(service);
               return (
                 <div
@@ -87,7 +88,16 @@ const ServicesSection = () => {
                   />
                 </div>
               );
-            })
+            }) : (
+              <div className="col-span-full">
+                <ZeroState 
+                  title="No Featured Services" 
+                  message="We are still populating our elite service catalog. New professional solutions are added weekly!"
+                  actionLabel="Browse Categories"
+                  onAction={() => window.location.href='/categories'}
+                />
+              </div>
+            )
           }
         </div>
       </div>

@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { Wrench, Search, Filter, ArrowUpRight, DollarSign, CheckCircle2, LayoutGrid, List, Power, Activity, ShieldCheck, ShieldAlert, Zap, Layers } from 'lucide-react';
 import toast from "react-hot-toast";
+import ZeroState from "../../../components/UI/ZeroState";
 
 const MyServicesPage = () => {
   const [services, setServices] = useState([]);
@@ -96,15 +97,13 @@ const MyServicesPage = () => {
                 ))}
               </div>
             ) : services.length === 0 ? (
-              <div className="py-48 bg-white rounded-[5rem] border border-[#EADBC8]/40 shadow-2xl flex flex-col items-center justify-center gap-10 relative overflow-hidden group">
-                 <div className="absolute inset-0 bg-[#102C57]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-                 <div className="w-32 h-32 rounded-[3.5rem] bg-[#FEFAF6] border-2 border-[#DAC0A3]/20 flex items-center justify-center text-[#DAC0A3]/40 group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 shadow-inner">
-                    <Activity size={56} strokeWidth={1} />
-                 </div>
-                 <div className="text-center relative z-10">
-                    <p className="text-lg font-black text-[#102C57] uppercase tracking-[0.3em] mb-4">Zero Intelligence Detected</p>
-                    <p className="text-[11px] font-black uppercase text-[#DAC0A3] tracking-[0.2em] opacity-80 leading-relaxed italic">Synchronizing with global terminal... No active nodes found.</p>
-                 </div>
+              <div className="col-span-full">
+                <ZeroState 
+                  title="No Active Services" 
+                  message="It looks like you haven't activated any services yet. Activate your existing protocols or create a new one to start receiving requests."
+                  actionLabel="Add New Service"
+                  onAction={() => window.location.href='/dashboard/add-service'}
+                />
               </div>
             ) : viewMode === "grid" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -120,7 +119,7 @@ const MyServicesPage = () => {
                              ) : svc.service_name[0]}
                              <div className="absolute inset-0 bg-gradient-to-tr from-black/30 to-transparent"></div>
                           </div>
-                          <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-white ${svc.status === 'Active' ? 'bg-emerald-500 shadow-emerald-500/50' : 'bg-[#DAC0A3] shadow-black/10'} shadow-lg transition-colors`}></div>
+                          <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-white ${svc.status === 'Active' ? 'bg-emerald-50 shadow-emerald-500/50' : 'bg-[#DAC0A3] shadow-black/10'} shadow-lg transition-colors`}></div>
                        </div>
                        
                        <div className="flex flex-col items-end gap-3">

@@ -65,8 +65,11 @@ const ServiceDetail = () => {
                            <h1 className="text-3xl sm:text-5xl md:text-7xl font-black uppercase tracking-tighter mb-3 leading-tight">
                                {service.name}
                            </h1>
-                           <p className="text-sm md:text-xl text-[#FEFAF6]/80 font-medium mb-4 md:mb-6 leading-relaxed line-clamp-2 md:line-clamp-none">
-                               {service.description || 'Quick, clean and professional home services at your doorstep. Skilled experts you can trust for every job.'}
+                           <p className="text-sm md:text-xl text-[#FEFAF6]/80 font-medium mb-4 md:mb-6 leading-relaxed">
+                               {(() => {
+                                   const rawDesc = service.description || 'Quick, clean and professional home services at your doorstep. Skilled experts you can trust for every job.';
+                                   return rawDesc.length > 60 ? rawDesc.slice(0, 60).trimEnd() + '...' : rawDesc;
+                               })()}
                            </p>
                            <div className="flex items-center gap-4">
                                <StarRating rating={service.rating} size="lg" />

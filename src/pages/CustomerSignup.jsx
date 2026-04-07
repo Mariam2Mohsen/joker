@@ -37,7 +37,13 @@ const CustomerSignup = () => {
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    if (Object.keys(newErrors).length > 0) {
+      const errorMessages = Object.values(newErrors).join(" • ");
+      notifyError(`Please fix the following: ${errorMessages}`);
+      return false;
+    }
+    return true;
   };
 
   const handleSignUp = async (e) => {
@@ -73,6 +79,17 @@ const CustomerSignup = () => {
       if (err.response?.status === 409) {
         setErrors({ email: "Email already exists" });
         notifyError("Email already exists!");
+      } else if (err.response?.data?.errors) {
+        let backendErrors = "";
+        const dataErrors = err.response.data.errors;
+        if (Array.isArray(dataErrors)) {
+          backendErrors = dataErrors.map(e => e.msg || e).join(" • ");
+        } else if (typeof dataErrors === 'object') {
+          backendErrors = Object.values(dataErrors).join(" • ");
+        } else {
+          backendErrors = String(dataErrors);
+        }
+        notifyError(`Signup failed: ${backendErrors}`);
       } else if (err.response?.data?.message) {
         notifyError(err.response.data.message);
       } else {
@@ -113,37 +130,47 @@ const CustomerSignup = () => {
           <form onSubmit={handleSignUp} className="p-8 md:p-12 space-y-8">
             <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input label="First Name" required placeholder="First Name" value={form.firstName || ''} error={errors.firstName} onChange={e => { setForm({ ...form, firstName: e.target.value }); if (errors.firstName) setErrors({ ...errors, firstName: null }) }} />
-                <Input label="Last Name" required placeholder="Last Name" value={form.lastName || ''} error={errors.lastName} onChange={e => { setForm({ ...form, lastName: e.target.value }); if (errors.lastName) setErrors({ ...errors, lastName: null }) }} />
+                <Input label="First Name" required placeholder="First Name" value={form.firstName || ''} error={errors.firstName} onChange={e => { const val = e.target.value; setForm(prev => ({ ...prev, firstName: val })); setErrors(prev => ({ ...prev, firstName: !val.trim() ? "First name is required" : null })); }} />
+                <Input label="Last Name" required placeholder="Last Name" value={form.lastName || ''} error={errors.lastName} onChange={e => { const val = e.target.value; setForm(prev => ({ ...prev, lastName: val })); setErrors(prev => ({ ...prev, lastName: !val.trim() ? "Last name is required" : null })); }} />
               </div>
 
               <div className="grid grid-cols-1 gap-6">
-                <Input label="Email Address" type="email" required placeholder="Email Address" value={form.email || ''} error={errors.email} onChange={e => { setForm({ ...form, email: e.target.value }); if (errors.email) setErrors({ ...errors, email: null }) }} />
+                <Input 
+                  label="Email Address" 
+                  type="email" 
+                  required 
+                  placeholder="Email Address" 
+                  value={form.email || ''} 
+                  error={errors.email} 
+                  valid={form.email && !errors.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)}
+                  onChange={e => { 
+                    const val = e.target.value; 
+                    setForm(prev => ({ ...prev, email: val })); 
+                    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+                    setErrors(prev => ({ ...prev, email: !val.trim() ? "Email is required" : !isEmailValid ? "Invalid email format" : null })); 
+                  }} 
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input label="Password" type="password" required placeholder="Password" value={form.password || ''} error={errors.password}onChange={e => { 
+                <Input label="Password" type="password" required placeholder="Password" value={form.password || ''} error={errors.password} onChange={e => { 
                   const val = e.target.value;
-                  setForm({ ...form, password: val }); 
-
-                
-                  if (val.length > 0 && val.length < 6) {
-                    setErrors(prev => ({ ...prev, password: "Password must be at least 6 characters" }));
-                  } else {
-                    setErrors(prev => ({ ...prev, password: null }));
-                  }
-                }} 
-              />
+                  setForm(prev => ({ ...prev, password: val })); 
+                  let err = null;
+                  if (!val.trim()) err = "Password is required";
+                  else if (val.length < 6) err = "Password must be at least 6 characters";
+                  
+                  setErrors(prev => {
+                    let confirmErr = prev.confirmPassword;
+                    if (form.confirmPassword && val !== form.confirmPassword) confirmErr = "Passwords do not match";
+                    else if (form.confirmPassword) confirmErr = null;
+                    return { ...prev, password: err, confirmPassword: confirmErr };
+                  });
+                }} />
                 <Input label="Confirm Password" type="password" required placeholder="Confirm Password" value={form.confirmPassword || ''} error={errors.confirmPassword} onChange={e => { 
                     const val = e.target.value;
-                    setForm({ ...form, confirmPassword: val }); 
-
-                   
-                    if (val !== form.password) {
-                      setErrors(prev => ({ ...prev, confirmPassword: "Passwords do not match" }));
-                    } else {
-                      setErrors(prev => ({ ...prev, confirmPassword: null }));
-                    }
+                    setForm(prev => ({ ...prev, confirmPassword: val })); 
+                    setErrors(prev => ({ ...prev, confirmPassword: val !== form.password ? "Passwords do not match" : null }));
                   }} 
                 />
               </div>
@@ -161,24 +188,21 @@ const CustomerSignup = () => {
                     error={errors.phone} 
                     onChange={e => { 
                       const val = e.target.value.replace(/\D/g, '');
-                      
                       if (val.length <= 11) {
                         setForm({ ...form, phone: val }); 
-                        if (errors.phone) setErrors({ ...errors, phone: null });
-                        if (val.length > 0 && val.length < 11) {
-                          setErrors(prev => ({ ...prev, phone: "Phone number must be 11 digits" }));
-                        } else {
-                          setErrors(prev => ({ ...prev, phone: null }));
-                        }
+                        let err = null;
+                        if (!val) err = "Phone number is required";
+                        else if (val.length < 11) err = "Phone number must be exactly 11 digits";
+                        setErrors(prev => ({ ...prev, phone: err }));
                       }
                     }}
                   />
-                  <Input label="City" placeholder="City" value={form.city || ''} error={errors.city} onChange={e => { setForm({ ...form, city: e.target.value }); if (errors.city) setErrors({ ...errors, city: null }) }} />
+                  <Input label="City" placeholder="City" value={form.city || ''} error={errors.city} onChange={e => { setForm({ ...form, city: e.target.value }); }} />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 gap-6">
-                <Input label="Full Address" placeholder="Address" value={form.address || ''} error={errors.address} onChange={e => { setForm({ ...form, address: e.target.value }); if (errors.address) setErrors({ ...errors, address: null }) }} />
+                <Input label="Full Address" placeholder="Address" value={form.address || ''} error={errors.address} onChange={e => { setForm({ ...form, address: e.target.value }); }} />
               </div>
 
               <div className="flex justify-end pt-8">

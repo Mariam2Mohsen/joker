@@ -3,6 +3,7 @@ import MainLayout from "../components/Layout/MainLayout";
 import CategoryCard from "../components/Categories/CategoryCard";
 import { CategoryCardSkeleton } from "../components/UI/Skeleton";
 import { useCategories } from "../hooks/useCategories";
+import ZeroState from "../components/UI/ZeroState";
 
 const Categories = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,35 +59,13 @@ const Categories = () => {
                 </div>
               ))
             ) : (
-              <div className="col-span-full py-32 text-center bg-white rounded-[4rem] border-2 border-dashed border-[#EADBC8]/40">
-                <div className="w-24 h-24 bg-[#FEFAF6] rounded-full flex items-center justify-center mx-auto mb-8">
-                  <svg
-                    className="w-12 h-12 text-[#102C57]/20"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-black text-[#102C57] uppercase tracking-widest mb-4">
-                  No categories matched
-                </h3>
-                <p className="text-[#102C57]/40 text-sm max-w-sm mx-auto font-medium">
-                  We couldn't find any categories matching your search. Try
-                  adjusting your keywords.
-                </p>
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="mt-10 text-[#102C57] font-black uppercase text-xs tracking-widest border-b-2 border-[#DAC0A3] pb-1 hover:text-[#DAC0A3] transition-colors"
-                >
-                  Clear Search
-                </button>
+              <div className="col-span-full">
+                <ZeroState 
+                  title="No Categories Found" 
+                  message={searchQuery ? `We couldn't find any categories matching "${searchQuery}". Please try a different search term.` : "There are currently no active service categories. Please check back later."}
+                  actionLabel={searchQuery ? "Clear Search" : "Refresh Page"}
+                  onAction={searchQuery ? () => setSearchQuery("") : () => window.location.reload()}
+                />
               </div>
             )}
           </div>
