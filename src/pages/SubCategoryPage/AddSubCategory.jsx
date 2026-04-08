@@ -13,7 +13,7 @@ const AddSubCategory = () => {
         name: '',
         category_id: '',
         description: '',
-        status: 'active',
+        status: 'Active',
         sort_order: 0
     });
     const [errors, setErrors] = useState({});
@@ -91,7 +91,10 @@ const handleSubmit = async (e) => {
         const response = await axios[method](url, formData, getAuthHeaders());
 
         if (response.data.success) {
-            toast.success(isEditMode ? "Updated successfully" : "Created successfully");
+
+           const statusText = formData.status.toLowerCase() === 'active' ? 'Activated' : 'Deactivated';
+    
+            toast.success(`${isEditMode ? 'Updated' : 'Created'} and ${statusText} successfully!`);
             
             navigate('/admin/subcategory/list'); 
         }
@@ -121,22 +124,38 @@ const handleSubmit = async (e) => {
                         </div>
                     </div>
 
-                    <div className="flex bg-[#FEFAF6] rounded-xl p-1.5 border border-[#EADBC8] w-full md:w-auto">
-                        <button
-                            type="button"
-                            onClick={() => setFormData({ ...formData, status: 'active' })}
-                            className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${formData.status === 'active' ? 'bg-[#102C57] text-white shadow-xl' : 'text-[#102C57]/40 hover:text-[#102C57]'}`}
-                        >
+                   <div className="flex bg-[#FEFAF6] rounded-xl p-1.5  w-full md:w-auto shadow-inner">
+                    {/*Active */}
+                    <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, status: 'Active' })}
+                        className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+                            formData.status?.toLowerCase() === 'active'
+                                ? 'bg-green-500 text-white shadow-lg shadow-green-100 translate-y-[-1px]'
+                                : 'text-slate-400 hover:text-green-600 hover:bg-green-50'
+                        }`}
+                    >
+                        <div className="flex items-center justify-center gap-2">
+                            {formData.status?.toLowerCase() === 'active' && (
+                                <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                            )}
                             Active
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => setFormData({ ...formData, status: 'inactive' })}
-                            className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${formData.status === 'inactive' ? 'bg-[#102C57] text-white shadow-xl' : 'text-[#102C57]/40 hover:text-[#102C57]'}`}
-                        >
-                            Inactive
-                        </button>
-                    </div>
+                        </div>
+                    </button>
+
+                    {/* Inactive */}
+                    <button
+                        type="button"
+                        onClick={() => setFormData({ ...formData, status: 'Inactive' })}
+                        className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+                            formData.status?.toLowerCase() === 'inactive'
+                                ? 'bg-slate-500 text-white shadow-lg shadow-slate-100 translate-y-[-1px]'
+                                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+                        }`}
+                    >
+                        Inactive
+                    </button>
+                </div>
                 </div>
 
                 <form onSubmit={handleSubmit} noValidate className="p-8 md:p-12 space-y-12">

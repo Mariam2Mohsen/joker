@@ -43,7 +43,7 @@ const AddUser = () => {
                 password: '',
                 confirmPassword: '',
                 contactNumber: user.phone_number || '',
-                status: user.account_status === 'Active' ? 'active' : 'inactive',
+                status: user.account_status.toLowerCase() === 'active' ? 'active' : 'inactive',
                 address: user.Address || '',
                 description: user.Description || ''
               });
@@ -58,46 +58,73 @@ const AddUser = () => {
     }
   }, [id, isEditMode]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  let errorMsg = '';
 
-    if (name === 'contactNumber') {
+  
+  setFormData(prev => ({ ...prev, [name]: value }));
+
+ 
+  switch (name) {
+    case 'name':
+      if (!value.trim()) errorMsg = "Full name is required";
+      else if (value.trim().length < 3) errorMsg = "Full name must be at least 3 characters";
+      break;
+
+    case 'email':
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!value) errorMsg = "Email is required";
+      else if (!emailRegex.test(value)) errorMsg = "Invalid email format";
+      break;
+
+    case 'contactNumber':
+     
       const onlyNums = value.replace(/[^0-9]/g, '');
-      if (onlyNums.length <= 11) {
-        setFormData({ ...formData, [name]: onlyNums });
-        if (onlyNums.length > 0 && onlyNums.length < 11) {
-          setErrors(prev => ({ ...prev, contactNumber: "Must be 11 digits" }));
-        } else {
-          setErrors(prev => ({ ...prev, contactNumber: "" }));
-        }
-      }
-      return;
-    }
-
-    const updatedData = { ...formData, [name]: value };
-    setFormData(updatedData);
-
-    if (name === 'password') {
-      if (value.length > 0 && value.length < 6) {
-        setErrors(prev => ({ ...prev, password: "Too short! Min 6 characters" }));
+      
+      const limitedNums = onlyNums.slice(0, 11);
+      
+      setFormData(prev => ({ ...prev, contactNumber: limitedNums }));
+      
+      if (!limitedNums) {
+        errorMsg = "Phone number is required";
+      } else if (limitedNums.length < 11) {
+        errorMsg = "Phone number must be exactly 11 digits";
       } else {
-        setErrors(prev => ({ ...prev, password: "" }));
+        errorMsg = ""; 
       }
-    }
-
-    if (name === 'confirmPassword') {
-      if (value && value !== formData.password) {
-        setErrors(prev => ({ ...prev, confirmPassword: "Does not match" }));
+      break;
+    case 'password':
+      if (!isEditMode || value.length > 0) {
+        if (value.length < 6) errorMsg = "Password must be at least 6 characters";
+      }
+ 
+      if (formData.confirmPassword && value !== formData.confirmPassword) {
+        setErrors(prev => ({ ...prev, confirmPassword: "Passwords do not match" }));
       } else {
         setErrors(prev => ({ ...prev, confirmPassword: "" }));
       }
-    }
+      break;
 
-    if (!['password', 'confirmPassword', 'contactNumber'].includes(name)) {
-      if (errors[name]) setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
+    case 'confirmPassword':
+      if (value !== formData.password) errorMsg = "Passwords do not match";
+      break;
 
+    case 'userType':
+      if (!value) errorMsg = "Please select a role";
+      break;
+
+    case 'address':
+      if (!value.trim()) errorMsg = "Physical address is required";
+      break;
+
+    default:
+      break;
+  }
+
+  
+  setErrors(prev => ({ ...prev, [name]: errorMsg }));
+};
   const validateForm = () => {
     let newErrors = {};
     if (!formData.name) newErrors.name = "FULL NAME IS REQUIRED";
@@ -200,24 +227,35 @@ const AddUser = () => {
             </div>
           </div>
 
-          <div className="flex bg-[#FEFAF6] rounded-xl p-1.5 border border-[#EADBC8] w-full md:w-auto">
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, status: 'active' })}
-              className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${formData.status === 'active' ? 'bg-[#102C57] text-white shadow-xl translate-y-[-1px]' : 'text-[#102C57]/40 hover:text-[#102C57]'
-                }`}
-            >
-              Active
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormData({ ...formData, status: 'inactive' })}
-              className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${formData.status === 'inactive' ? 'bg-[#102C57] text-white shadow-xl translate-y-[-1px]' : 'text-[#102C57]/40 hover:text-[#102C57]'
-                }`}
-            >
-              Inactive
-            </button>
+          <div className="flex bg-[#FEFAF6] rounded-xl p-1.5  w-full md:w-auto shadow-inner">
+        
+        <button
+          type="button"
+          onClick={() => setFormData({ ...formData, status: 'active' })}
+          className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+            formData.status === 'active' 
+              ? 'bg-green-500 text-white shadow-lg shadow-green-200 translate-y-[-1px]' 
+              : 'text-slate-400 hover:text-green-600 hover:bg-green-50'
+          }`}
+        >
+          <div className="flex items-center justify-center gap-2">
+            {formData.status === 'active' && <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />}
+            Active
           </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setFormData({ ...formData, status: 'inactive' })}
+          className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+            formData.status === 'inactive' 
+              ? 'bg-slate-500 text-white shadow-lg shadow-slate-200 translate-y-[-1px]' 
+              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          Inactive
+        </button>
+      </div>
         </div>
 
         {/* Content Area */}

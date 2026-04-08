@@ -54,24 +54,12 @@ const Sidebar = ({ onClose }) => {
         </div>
       </div>
 
-      {/* User Quick Info */}
-      {/* <div className="px-6 py-6 border-b border-white/5 bg-[#0d254a]/50">
-        <div className="flex items-center gap-4">
-          <div className="relative group">
-            <FaUserCircle size={40} className="text-[#DAC0A3]" />
-            <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#0d254a]"></span>
-          </div>
-          <div className="overflow-hidden">
-            <p className="text-[12px] font-black text-[#FEFAF6] truncate">Welcome!</p>
-            <p className="text-[10px] text-[#DAC0A3]/70 font-bold uppercase tracking-widest">Admin User</p>
-          </div>
-        </div>
-      </div> */}
+
 
       <nav className="flex-1 py-4 space-y-1">
         {/* Main Dashboard */}
         <NavLink
-          to="/admin/dashboard"
+          to="users/list"
           className={({ isActive }) => itemClass({ isActive })}
           onClick={handleLinkClick}
         >

@@ -174,12 +174,12 @@ const UsersPage = () => {
                     <div className="flex justify-center">
                       <button
                         onClick={() => toggleStatus(user.Users_id, user.account_status)}
-                        className={`w-11 h-5 flex items-center rounded-full p-1 transition-all duration-300 ${user.account_status === 'Active'
+                        className={`w-11 h-5 flex items-center rounded-full p-1 transition-all duration-300 ${user.account_status.toLowerCase() === 'active'
                           ? 'bg-green-500 shadow-sm shadow-green-100'
                           : 'bg-[#EADBC8]'
                           }`}
                       >
-                        <div className={`w-3.5 h-3.5 bg-white rounded-full transition-all shadow-sm ${user.account_status === 'Active' ? 'translate-x-5' : 'translate-x-0'
+                        <div className={`w-3.5 h-3.5 bg-white rounded-full transition-all shadow-sm ${user.account_status === 'active' ? 'translate-x-5' : 'translate-x-0'
                           }`}></div>
                       </button>
                     </div>

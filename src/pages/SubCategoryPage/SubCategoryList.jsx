@@ -48,20 +48,31 @@ const SubCategoryList = () => {
 
 
   const toggleStatus = async (id, currentStatus) => {
-    try {
-      const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
-      const res = await axios.patch(`https://joker-hm0k.onrender.com/api/subcategories/${id}/status`,
-        { status: newStatus },
-        getAuthHeaders()
-      );
-      if (res.data.success) {
-        toast.success(res.data.message || "Status updated");
-        fetchSubCategories();
-      }
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Status update failed");
+  try {
+
+    const statusLower = currentStatus?.toLowerCase();
+    
+ 
+    const newStatusForBackend = statusLower === 'active' ? 'Inactive' : 'Active';
+
+    const res = await axios.patch(
+      `https://joker-hm0k.onrender.com/api/subcategories/${id}/status`,
+      { status: newStatusForBackend },
+      getAuthHeaders()
+    );
+
+    if (res.data.success) {
+     
+      const successMessage = newStatusForBackend === 'Active' 
+        ? "Sub-category activated successfully" 
+        : "Sub-category deactivated successfully";
+        toast.success(successMessage);
+      fetchSubCategories(); 
     }
-  };
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Status update failed");
+  }
+};
 
 
   const confirmDelete = async () => {
@@ -142,11 +153,18 @@ const SubCategoryList = () => {
                   <td className="py-5 px-8">
                     <div className="flex justify-center">
                       <button
-                        onClick={() => toggleStatus(item.id, item.status)}
-                        className={`w-11 h-5 flex items-center rounded-full p-1 transition-all duration-300 ${item.status === 'active' ? 'bg-green-500' : 'bg-[#EADBC8]'}`}
-                      >
-                        <div className={`w-3.5 h-3.5 bg-white rounded-full transition-all shadow-sm ${item.status === 'active' ? 'translate-x-5' : 'translate-x-0'}`}></div>
-                      </button>
+                      onClick={() => toggleStatus(item.id, item.status)}
+                      className={`w-11 h-5 flex items-center rounded-full p-1 transition-all duration-300 ${
+                    
+                        item.status?.toLowerCase() === 'active' ? 'bg-green-500' : 'bg-[#EADBC8]'
+                      }`}
+                    >
+                      <div
+                        className={`w-3.5 h-3.5 bg-white rounded-full transition-all shadow-sm ${
+                          item.status?.toLowerCase() === 'active' ? 'translate-x-5' : 'translate-x-0'
+                        }`}
+                      ></div>
+                    </button>
                     </div>
                   </td>
                   <td className="py-5 px-8 text-center relative overflow-visible">

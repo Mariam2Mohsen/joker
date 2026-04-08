@@ -7,14 +7,12 @@ const AddCategory = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEditMode = Boolean(id);
-
-  const [isActive, setIsActive] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     image: '',
     description: '',
-    color: '#102C57', // القيمة الافتراضية للون
-    sort_order: 0      // القيمة الافتراضية للترتيب
+    status: 'Active',
+    sort_order: 0      
   });
   const [imageFile, setImageFile] = useState(null);
   const [errors, setErrors] = useState({});
@@ -31,10 +29,10 @@ const AddCategory = () => {
               name: cat.name,
               description: cat.description,
               image: cat.image,
-              color: cat.color || '#102C57',
+             status: cat.status|| 'Active',
               sort_order: cat.sort_order || 0
             });
-            setIsActive(cat.status === 'active');
+         
           }
         } catch (error) {
           toast.error("Error fetching category data");
@@ -75,10 +73,8 @@ const AddCategory = () => {
     const data = new FormData();
     data.append('name', formData.name);
     data.append('description', formData.description);
-    data.append('status', isActive ? 'active' : 'inactive');
-    
-    // إرسال الحقول الجديدة
-    data.append('color', formData.color);
+    data.append('status', formData.status);
+   data.append('color','#102C57');
     data.append('sort_order', formData.sort_order);
 
     if (imageFile) {
@@ -113,7 +109,7 @@ const AddCategory = () => {
       setLoading(false);
     }
   };
-
+const MAX_DESCRIPTION = 400;
   return (
     <div className="max-w-7xl mx-auto min-h-screen bg-[#FEFAF6] p-2 sm:p-4 pb-20">
       <div className="bg-white rounded-[2rem] shadow-sm border border-[#EADBC8] overflow-hidden">
@@ -130,23 +126,37 @@ const AddCategory = () => {
               <p className="text-[#DAC0A3] text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Management / Classification</p>
             </div>
           </div>
-
-          <div className="flex bg-[#FEFAF6] rounded-xl p-1.5 border border-[#EADBC8] w-full md:w-auto">
-            <button
-              type="button"
-              onClick={() => setIsActive(true)}
-              className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${isActive ? 'bg-[#102C57] text-white shadow-xl translate-y-[-1px]' : 'text-[#102C57]/40 hover:text-[#102C57]'}`}
-            >
+            {/* Activ & Inactive toggle */}
+        <div className="flex bg-[#FEFAF6] rounded-xl p-1.5 w-full md:w-auto shadow-inner ">
+        
+          <button
+            type="button"
+            onClick={() => setFormData({ ...formData, status: 'Active' })} 
+            className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+              formData.status?.toLowerCase() === 'active'
+                ? 'bg-green-500 text-white shadow-lg shadow-green-200 translate-y-[-1px]'
+                : 'text-slate-400 hover:text-green-600 hover:bg-green-50'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              {formData.status?.toLowerCase() === 'active' && <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />}
               Active
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsActive(false)}
-              className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all uppercase tracking-widest ${!isActive ? 'bg-[#102C57] text-white shadow-xl translate-y-[-1px]' : 'text-[#102C57]/40 hover:text-[#102C57]'}`}
-            >
-              Inactive
-            </button>
-          </div>
+            </div>
+          </button>
+
+       
+          <button
+            type="button"
+            onClick={() => setFormData({ ...formData, status: 'Inactive' })} 
+            className={`flex-1 md:px-10 py-3 text-[10px] font-black rounded-lg transition-all duration-300 uppercase tracking-widest ${
+              formData.status?.toLowerCase() === 'inactive' 
+                ? 'bg-slate-500 text-white shadow-lg shadow-slate-200 translate-y-[-1px]'
+                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100'
+            }`}
+          >
+            Inactive
+          </button>
+        </div>
         </div>
 
         {/* Content Area */}
@@ -170,26 +180,39 @@ const AddCategory = () => {
                   {errors.name && <span className={errorTextClass}>{errors.name}</span>}
                 </div>
 
-                {/* الحقول الجديدة: Color & Sort Order */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className={labelClass}>Theme Color :</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="color"
-                        className="w-12 h-10 rounded-lg border border-[#DAC0A3] cursor-pointer bg-[#FEFAF6] p-1"
-                        value={formData.color}
-                        onChange={(e) => setFormData({ ...formData, color: e.target.value })}
-                      />
-                      <input
-                        type="text"
-                        className={getFieldClass('color')}
-                        value={formData.color}
-                        readOnly
-                      />
-                    </div>
-                  </div>
+               
+          
+              <div className="space-y-1.5">
+                <div className="flex justify-between items-center">
+                  <label className={labelClass}>Description : <span className="text-red-500">*</span></label>
+                 
+                  <span className={`text-[9px] font-black uppercase tracking-widest ${
+                    formData.description?.length >= MAX_DESCRIPTION ? 'text-red-500' : 'text-[#DAC0A3]'
+                  }`}>
+                    {formData.description?.length || 0} / {MAX_DESCRIPTION}
+                  </span>
+                </div>
 
+                <textarea
+                  maxLength={MAX_DESCRIPTION} 
+                  rows="6"
+                  placeholder="Briefly describe this category..."
+                  className={`${getFieldClass('description')} resize-none h-44`}
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                ></textarea>
+                
+                {errors.description && <span className={errorTextClass}>{errors.description}</span>}
+                
+                
+                {formData.description?.length === MAX_DESCRIPTION && (
+                  <span className="text-[#E72929] text-[8px] font-black uppercase mt-1 block">
+                    Maximum limit reached!
+                  </span>
+                )}
+              </div>
+                  <div className="grid grid-cols-2 gap-4">
+               
                   <div className="space-y-1.5">
                     <label className={labelClass}>Sort Order :</label>
                     <input
@@ -200,18 +223,6 @@ const AddCategory = () => {
                       onChange={(e) => setFormData({ ...formData, sort_order: e.target.value })}
                     />
                   </div>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className={labelClass}>Description : <span className="text-red-500">*</span></label>
-                  <textarea
-                    rows="6"
-                    placeholder="Briefly describe this category..."
-                    className={`${getFieldClass('description')} resize-none h-44`}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  ></textarea>
-                  {errors.description && <span className={errorTextClass}>{errors.description}</span>}
                 </div>
               </div>
             </div>
