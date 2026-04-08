@@ -12,7 +12,7 @@ const CategoryList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-
+const [statusFilter, setStatusFilter] = useState("All");
 
   const [deleteModal, setDeleteModal] = useState({ show: false, categoryId: null });
 
@@ -73,9 +73,12 @@ const CategoryList = () => {
     }
   };
 
-  const filteredData = categories.filter(cat =>
-    cat.name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredData = categories.filter(cat =>{
+  const matchesSearch = cat.name?.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesStatus = statusFilter === "All" || cat.status.toLowerCase() === statusFilter.toLowerCase();
+  
+  return matchesSearch && matchesStatus;
+});
 
   const totalPages = Math.ceil(filteredData.length / entriesPerPage);
   const indexOfLastItem = currentPage * entriesPerPage;
@@ -97,7 +100,20 @@ const CategoryList = () => {
 
       <div className="bg-white rounded-[2rem] shadow-sm border border-[#EADBC8] overflow-hidden">
         <div className="p-6 flex flex-wrap justify-between items-center gap-4 bg-white border-b border-[#FEFAF6]">
-          <div className="flex items-center gap-2"></div>
+          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+      <span className="text-[10px] font-black text-[#DAC0A3] uppercase tracking-widest">Filter by:</span>
+      <select
+        value={statusFilter}
+        onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+        className="pl-3 pr-8 py-2.5 border border-[#EADBC8] rounded-xl text-[10px] font-black uppercase outline-none bg-[#FEFAF6] text-[#102C57] focus:border-[#102C57] transition-all cursor-pointer"
+      >
+        <option value="All">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+  </div>
           <div className="relative">
             <input
               type="text"

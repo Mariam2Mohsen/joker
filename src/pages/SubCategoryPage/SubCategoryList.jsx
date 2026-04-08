@@ -10,7 +10,7 @@ const SubCategoryList = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
+const [statusFilter, setStatusFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,10 +90,15 @@ const SubCategoryList = () => {
   };
 
 
-  const filteredData = subCategories.filter(item =>
+const filteredData = subCategories.filter(item => {
+  const matchesSearch = 
     item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.category_name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    item.category_name?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+  const matchesStatus = statusFilter === "All" || item.status?.toLowerCase() === statusFilter.toLowerCase();
+  
+  return matchesSearch && matchesStatus;
+});
 
   const totalPages = Math.ceil(filteredData.length / entriesPerPage);
   const currentItems = filteredData.slice((currentPage - 1) * entriesPerPage, currentPage * entriesPerPage);
@@ -115,9 +120,21 @@ const SubCategoryList = () => {
       <div className="bg-white rounded-[2rem] shadow-sm border border-[#EADBC8] overflow-hidden">
         {/* Search Bar */}
         <div className="p-6 flex flex-wrap justify-between items-center gap-4 bg-white border-b border-[#FEFAF6]">
+          <div className="flex items-center gap-4">
           <div className="text-[10px] font-black text-[#102C57]/40 uppercase tracking-widest">
             {loading ? 'Fetching...' : `Total: ${filteredData.length} Items`}
+                  </div>
+                  <select
+              value={statusFilter}
+              onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+              className="pl-3 pr-8 py-2 border border-[#EADBC8] rounded-xl text-[10px] font-black uppercase outline-none bg-[#FEFAF6] text-[#102C57] focus:border-[#102C57] cursor-pointer"
+            >
+              <option value="All">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
           </div>
+
           <div className="relative">
             <input
               type="text"
